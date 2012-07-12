@@ -1,0 +1,36 @@
+// ShellExtTest.idl : ShellExtTest 的 IDL 源
+//
+
+// 此文件将由 MIDL 工具处理以
+// 产生类型库(ShellExtTest.tlb)和封送处理代码。
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(5006781F-7234-4C1E-9439-688B3EE6DDEE),
+	dual,
+	nonextensible,
+	helpstring("ISimpleShlExt 接口"),
+	pointer_default(unique)
+]
+interface ISimpleShlExt : IDispatch{
+};
+[
+	uuid(317CAE02-ED1C-4A8D-A7FD-23506BC6C92A),
+	version(1.0),
+	helpstring("ShellExtTest 1.0 类型库")
+]
+library ShellExtTestLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(CB380864-92AE-4A8B-8922-74D550249B95),
+		helpstring("SimpleShlExt Class")
+	]
+	coclass SimpleShlExt
+	{
+		[default] interface ISimpleShlExt;
+	};
+};

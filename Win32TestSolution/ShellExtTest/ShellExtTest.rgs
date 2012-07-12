@@ -1,0 +1,24 @@
+HKCR
+{
+	NoRemove *
+	{
+		NoRemove ShellEx
+		{
+            NoRemove ContextMenuHandlers
+            {
+                ForceRemove SimpleTestShellExt = s '{CB380864-92AE-4A8B-8922-74D550249B95}'
+            }
+        }
+    }
+    
+    NoRemove Folder
+    {
+        NoRemove ShellEx
+        {
+            NoRemove ContextMenuHandlers
+            {
+                ForceRemove SimpleTestShellExt = s '{CB380864-92AE-4A8B-8922-74D550249B95}'
+            }
+        }
+    }
+}

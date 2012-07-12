@@ -1,0 +1,8 @@
+
+LIBRARY      "ShellExtTestPS"
+
+EXPORTS
+	DllGetClassObject		PRIVATE
+	DllCanUnloadNow			PRIVATE
+	DllRegisterServer		PRIVATE
+	DllUnregisterServer		PRIVATE

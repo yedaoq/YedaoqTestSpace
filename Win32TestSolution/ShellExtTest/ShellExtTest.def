@@ -1,0 +1,10 @@
+; ShellExtTest.def : 定义模块参数。
+
+LIBRARY      "ShellExtTest.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE
+	DllInstall		PRIVATE

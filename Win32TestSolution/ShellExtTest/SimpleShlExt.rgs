@@ -1,0 +1,26 @@
+HKCR
+{
+	ShellExtTest.SimpleShlExt.1 = s 'SimpleShlExt Class'
+	{
+		CLSID = s '{CB380864-92AE-4A8B-8922-74D550249B95}'
+	}
+	ShellExtTest.SimpleShlExt = s 'SimpleShlExt Class'
+	{
+		CLSID = s '{CB380864-92AE-4A8B-8922-74D550249B95}'
+		CurVer = s 'ShellExtTest.SimpleShlExt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CB380864-92AE-4A8B-8922-74D550249B95} = s 'SimpleShlExt Class'
+		{
+			ProgID = s 'ShellExtTest.SimpleShlExt.1'
+			VersionIndependentProgID = s 'ShellExtTest.SimpleShlExt'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{317CAE02-ED1C-4A8D-A7FD-23506BC6C92A}'
+		}
+	}
+}
