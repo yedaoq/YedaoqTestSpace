@@ -25,8 +25,8 @@ HRESULT CSimpleShlExt::Initialize ( LPCITEMIDLIST pidlFolder, LPDATAOBJECT pData
 		SHGetPathFromIDList(pidlFolder, buf);
 
 		// 2. 根据pidlFolder查询文件夹路径的方法2 , available above vista
-		//wchar_t* ret;
-		//SHGetNameFromIDList(pidlFolder, SIGDN_FILESYSPATH, &ret);		
+		wchar_t* ret;
+		SHGetNameFromIDList(pidlFolder, SIGDN_FILESYSPATH, &ret);		
 
 		return S_OK;
 	}
