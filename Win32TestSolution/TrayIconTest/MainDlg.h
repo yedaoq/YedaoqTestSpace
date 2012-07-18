@@ -53,6 +53,7 @@ public:
 protected:
 	EnumCloseAction close_action_;
 	WTL::CEdit		ctl_edit_tip_;
+	WTL::CStatic	ctl_pic_;
 	int				trayicon_id_;
 
 public:

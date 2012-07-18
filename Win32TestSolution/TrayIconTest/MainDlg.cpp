@@ -38,6 +38,17 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	UIAddChildWindowContainer(m_hWnd);
 
 	ctl_edit_tip_ = GetDlgItem(IDC_TXTTIP);
+	ctl_pic_ = GetDlgItem(IDC_PIC1);
+
+	HICON icon = LoadIcon(NULL, IDI_QUESTION);
+
+	SendMessage(WM_SETICON, ICON_SMALL, (LPARAM)icon);
+
+	HBITMAP image = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 0, 0, 0);
+
+	ctl_pic_.SetIcon(icon);
+
+	ctl_pic_.SetBitmap(image);
 
 	return TRUE;
 }
@@ -114,13 +125,13 @@ LRESULT CMainDlg::OnBnClickedBtnhover(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /
 	NOTIFYICONDATA d;
 	memset(&d, 0, sizeof(d));
 	d.cbSize = sizeof(NOTIFYICONDATA);
-	d.dwInfoFlags = NIF_TIP;
+	d.uFlags = NIF_TIP;
 	d.hWnd = m_hWnd;
 	d.uID = 1;
 
 	ctl_edit_tip_.GetWindowText(d.szTip, sizeof(d.szInfo) / sizeof(d.szInfo[0]));
 
-	Shell_NotifyIcon(NIM_MODIFY, &d);
+	ATLASSERT(Shell_NotifyIcon(NIM_MODIFY, &d));
 
 	return 0;
 }
@@ -149,7 +160,7 @@ LRESULT CMainDlg::OnBnClickedBtncreate(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
 	NOTIFYICONDATA d;
 	memset(&d, 0, sizeof(d));
 	d.cbSize = sizeof(NOTIFYICONDATA);
-	d.hWnd = m_hWnd;
+	//d.hWnd = m_hWnd;
 	d.uID = 1;
 
 	if(trayicon_id_>0)
@@ -160,11 +171,13 @@ LRESULT CMainDlg::OnBnClickedBtncreate(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
 	}
 	else
 	{
-		d.dwInfoFlags = NIF_TIP | NIF_MESSAGE | NIF_ICON;
-		ctl_edit_tip_.GetWindowText(d.szTip, sizeof(d.szInfo) / sizeof(d.szInfo[0]));
+		d.uFlags = NIF_TIP | NIF_MESSAGE | NIF_ICON;
+		ctl_edit_tip_.GetWindowText(d.szTip, sizeof(d.szTip) / sizeof(d.szTip[0]));
 		d.uCallbackMessage = WM_TRAYNOTIFY;
+		HICON icon = LoadIcon(NULL, IDI_QUESTION);
+		d.hIcon = icon;
 		//d.hIcon = (HICON)SendMessage(WM_GETICON, ICON_SMALL, 0);
-		d.hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
+		//d.hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
 		trayicon_id_ = 1;
 
 		ATLASSERT(Shell_NotifyIcon(NIM_ADD, &d));

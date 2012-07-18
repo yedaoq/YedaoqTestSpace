@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShellExtTest", "ShellExtTes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TrayIconTest", "TrayIconTest\TrayIconTest.vcxproj", "{9B4088DE-FBBF-4440-B581-F17ABE830DBF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleTest", "SimpleTest\SimpleTest.vcxproj", "{6CED8358-10BD-4CBE-B9DC-02E4E31A70FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{9B4088DE-FBBF-4440-B581-F17ABE830DBF}.Debug|Win32.Build.0 = Debug|Win32
 		{9B4088DE-FBBF-4440-B581-F17ABE830DBF}.Release|Win32.ActiveCfg = Release|Win32
 		{9B4088DE-FBBF-4440-B581-F17ABE830DBF}.Release|Win32.Build.0 = Release|Win32
+		{6CED8358-10BD-4CBE-B9DC-02E4E31A70FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6CED8358-10BD-4CBE-B9DC-02E4E31A70FA}.Debug|Win32.Build.0 = Debug|Win32
+		{6CED8358-10BD-4CBE-B9DC-02E4E31A70FA}.Release|Win32.ActiveCfg = Release|Win32
+		{6CED8358-10BD-4CBE-B9DC-02E4E31A70FA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
