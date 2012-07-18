@@ -156,5 +156,5 @@ bool nsYedaoqTrayIcon::CTrayIcon::DelayCreate()
 	{
 		data_.cbSize = 0;
 	}
-	return bRet;
+	return TRUE == bRet;
 }

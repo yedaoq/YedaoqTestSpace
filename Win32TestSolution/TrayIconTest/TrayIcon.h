@@ -14,7 +14,7 @@ namespace nsYedaoqTrayIcon
 		CMorphingIcon(DWORD _miniseconds_per_icon, WORD _cycle_times, WORD _icon_count, ...);
 		~CMorphingIcon();
 
-		HICON	next() const { ++icon_cur; if(icon_cur >= icon_count) icon_cur = 0; return icons[icon_cur]; }
+		HICON	next() { ++icon_cur; if(icon_cur >= icon_count) icon_cur = 0; return icons[icon_cur]; }
 
 		DWORD	miniseconds_per_icon;
 		WORD	icon_cur;
