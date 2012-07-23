@@ -3,6 +3,10 @@
 
 #include <shellapi.h>
 
+#ifndef NIIF_LARGE_ICON
+#define NIIF_LARGE_ICON 0x00000020
+#endif
+
 namespace nsYedaoqTrayIcon
 {
 	interface ITrayIconCallBack;
@@ -27,6 +31,28 @@ namespace nsYedaoqTrayIcon
 
 	class CTrayIcon
 	{
+		struct TrayIconData
+		{
+			DWORD	cbSize;
+			HWND	hWnd;
+			UINT	uID;
+			UINT	uFlags;
+			UINT	uCallbackMessage;
+			HICON	hIcon;
+			TCHAR	szTip[128];
+			DWORD	dwState;
+			DWORD	dwStateMask;
+			TCHAR	szInfo[256];
+			union {
+				UINT  uTimeout;
+				UINT  uVersion;  // used with NIM_SETVERSION, values 0, 3 and 4
+			} DUMMYUNIONNAME;
+			TCHAR	szInfoTitle[64];
+			DWORD	dwInfoFlags;
+			GUID	guidItem;
+			HICON	hBalloonIcon;
+		};
+
 	public:
 		CTrayIcon(HWND hCallbackWnd, UINT uCallbackMessage, UINT uID, HICON hIcon, LPCTSTR lpszTip);
 		~CTrayIcon(void);
@@ -40,6 +66,7 @@ namespace nsYedaoqTrayIcon
 
 	protected:
 		bool DelayCreate();
+		static DWORD GetAdaptiveSize4IconData();
 
 	protected:
 		NOTIFYICONDATA data_;

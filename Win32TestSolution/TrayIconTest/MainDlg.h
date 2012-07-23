@@ -6,6 +6,12 @@
 
 #define WM_TRAYNOTIFY WM_USER + 10086
 
+namespace nsYedaoqTrayIcon
+{
+	class CTrayIcon;
+}
+
+
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 		public CMessageFilter, public CIdleHandler
 {
@@ -34,6 +40,7 @@ public:
 		COMMAND_HANDLER(IDC_BTNTIP, BN_CLICKED, OnBnClickedBtntip)
 		COMMAND_HANDLER(IDC_BTNQUERY, BN_CLICKED, OnBnClickedBtnquery)
 		COMMAND_HANDLER(IDC_BTNCREATE, BN_CLICKED, OnBnClickedBtncreate)
+		COMMAND_HANDLER(IDC_BUTTON1, BN_CLICKED, OnBnClickedButton1)
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -56,9 +63,12 @@ protected:
 	WTL::CStatic	ctl_pic_;
 	int				trayicon_id_;
 
+	nsYedaoqTrayIcon::CTrayIcon*		tray_icon_;
+
 public:
 	LRESULT OnBnClickedBtnhover(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedBtntip(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedBtnquery(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedBtncreate(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnBnClickedButton1(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

@@ -8,6 +8,8 @@
 #include "aboutdlg.h"
 #include "MainDlg.h"
 
+#include "TrayIcon.h"
+
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
 {
 	return CWindow::IsDialogMessage(pMsg);
@@ -41,6 +43,8 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	ctl_pic_ = GetDlgItem(IDC_PIC1);
 
 	HICON icon = LoadIcon(NULL, IDI_QUESTION);
+
+	tray_icon_ = new nsYedaoqTrayIcon::CTrayIcon(m_hWnd, WM_USER + 10086, 2, icon, TEXT("test icon"));
 
 	SendMessage(WM_SETICON, ICON_SMALL, (LPARAM)icon);
 
@@ -122,6 +126,12 @@ LRESULT CMainDlg::OnClose( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 LRESULT CMainDlg::OnBnClickedBtnhover(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 在此添加控件通知处理程序代码
+
+	TCHAR buf[64];
+	ctl_edit_tip_.GetWindowText(buf, 64);
+	tray_icon_->SetTip(buf);
+	return 0;
+
 	NOTIFYICONDATA d;
 	memset(&d, 0, sizeof(d));
 	d.cbSize = sizeof(NOTIFYICONDATA);
@@ -140,7 +150,7 @@ LRESULT CMainDlg::OnBnClickedBtnhover(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /
 LRESULT CMainDlg::OnBnClickedBtntip(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 在此添加控件通知处理程序代码
-
+	tray_icon_->ShowBalloonInfo(TEXT("hahaha~~~"), TEXT("tip"), nsYedaoqTrayIcon::EnumBalloonIcon::TIBI_WARNING, NULL, nsYedaoqTrayIcon::EnumBalloonFlag::TIBF_NONE /*nsYedaoqTrayIcon::EnumBalloonFlag::TIBF_LARGE_ICON*/);
 	return 0;
 }
 
@@ -157,10 +167,24 @@ LRESULT CMainDlg::OnBnClickedBtnquery(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /
 LRESULT CMainDlg::OnBnClickedBtncreate(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 在此添加控件通知处理程序代码
+
+	if(trayicon_id_>0)
+	{
+		tray_icon_->Show(false);
+		trayicon_id_ = -1;
+	}
+	else
+	{
+		tray_icon_->Show(true);
+		trayicon_id_ = 1;
+	}
+
+	return 0;
+
 	NOTIFYICONDATA d;
 	memset(&d, 0, sizeof(d));
 	d.cbSize = sizeof(NOTIFYICONDATA);
-	//d.hWnd = m_hWnd;
+	d.hWnd = m_hWnd;
 	d.uID = 1;
 
 	if(trayicon_id_>0)
@@ -188,7 +212,15 @@ LRESULT CMainDlg::OnBnClickedBtncreate(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
 		}
 	}
 
+	return 0;
+}
 
 
+LRESULT CMainDlg::OnBnClickedButton1(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 在此添加控件通知处理程序代码
+	static bool bShow = FALSE;
+	tray_icon_->Show(bShow);
+	bShow = !bShow;
 	return 0;
 }

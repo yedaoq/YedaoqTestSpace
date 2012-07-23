@@ -88,7 +88,20 @@ void nsYedaoqTrayIcon::CTrayIcon::SetIcon( CMorphingIcon* icon )
 
 void nsYedaoqTrayIcon::CTrayIcon::Show( bool fShow )
 {
-	CHECKDELAYCREATE;
+	if(fShow)
+	{
+		CHECKDELAYCREATE;
+	}
+	else
+	{
+		data_.uFlags = 0;
+		BOOL bRet = Shell_NotifyIcon(NIM_DELETE, &data_);
+// 		data_.uFlags = NIF_STATE;
+// 		data_.dwState = NIS_HIDDEN /*| NIS_SHAREDICON*/;
+// 		data_.dwStateMask = 0xFFFFFFFF;
+// 		BOOL bRet = Shell_NotifyIcon(NIM_MODIFY, &data_);
+		data_.cbSize = 0;
+	}
 }
 
 void nsYedaoqTrayIcon::CTrayIcon::ShowBalloonInfo( LPCTSTR lpszInfo, LPCTSTR lpszTitle, EnumBalloonIcon system_icon, HICON custom_icon, EnumBalloonFlag flag )
@@ -137,7 +150,7 @@ bool nsYedaoqTrayIcon::CTrayIcon::DelayCreate()
 
 		if(!::IsWindow(data_.hWnd)) break;
 
-		data_.cbSize = 0xFFFF;
+		data_.cbSize = 0;
 
 	} while (false);
 
@@ -147,7 +160,7 @@ bool nsYedaoqTrayIcon::CTrayIcon::DelayCreate()
 	}
 
 	// load up the NOTIFYICONDATA structure
-	data_.cbSize = sizeof(NOTIFYICONDATA);
+	data_.cbSize = GetAdaptiveSize4IconData();
 	data_.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
 
 	// Set the tray icon
@@ -157,4 +170,34 @@ bool nsYedaoqTrayIcon::CTrayIcon::DelayCreate()
 		data_.cbSize = 0;
 	}
 	return TRUE == bRet;
+}
+
+DWORD nsYedaoqTrayIcon::CTrayIcon::GetAdaptiveSize4IconData()
+{
+	OSVERSIONINFOEX osvi;
+	BOOL bOsVersionInfoEx;
+	memset(&osvi, 0, sizeof(OSVERSIONINFOEX));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	if( !GetVersionEx ((OSVERSIONINFO *) &osvi))
+	{
+		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
+		if (! GetVersionEx ( (OSVERSIONINFO *) &osvi) ) 
+			return 0;
+	}
+
+	if(osvi.dwMajorVersion >= 6)
+	{
+		return sizeof(TrayIconData);
+	}
+	else if(osvi.dwMajorVersion == 5)
+	{
+		if(osvi.dwMinorVersion >= 1)
+			return NOTIFYICONDATA_V3_SIZE;
+		else
+			return NOTIFYICONDATA_V2_SIZE;
+	}
+	else
+	{
+		return NOTIFYICONDATA_V1_SIZE;
+	}
 }
