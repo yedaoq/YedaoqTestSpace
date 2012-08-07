@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include "AppUpgradeUtil.h"
 
 void CoutModuleFileName(HMODULE module)
 {
@@ -8,7 +9,7 @@ void CoutModuleFileName(HMODULE module)
 	std::wcout<<path;
 }
 
-int SelfCover(HMODULE module)
+int SelfCover(HMODULE module, AppUpgradeUtil& util)
 {
 	TCHAR path[MAX_PATH + 1];
 	GetModuleFileName(module, path, MAX_PATH);
@@ -17,6 +18,11 @@ int SelfCover(HMODULE module)
 	std::wcout<<path<<std::endl;
 
 	std::wstring tmp = path;
+
+	util.FileReplace(tmp.c_str(), (tmp + TEXT(".new")).c_str());
+	//AppUpgradeUtil::FileReplace(tmp.c_str(), (tmp + TEXT(".new")).c_str());
+
+	return 0;
 
 	MoveFile(path, (tmp + TEXT(".bak")).c_str());
 

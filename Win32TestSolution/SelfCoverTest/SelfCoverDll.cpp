@@ -5,7 +5,7 @@
 #include "SelfCoverDll.h"
 #include "SelfCover.h"
 
-HMODULE g_module = 0;
+HMODULE dll_handle = 0;
 
 // 这是导出变量的一个示例
 SELFCOVERDLL_API int nSelfCoverDll=0;
@@ -13,6 +13,7 @@ SELFCOVERDLL_API int nSelfCoverDll=0;
 // 这是导出函数的一个示例。
 SELFCOVERDLL_API int SelfCoverDll(void)
 {
-	return SelfCover(g_module);
+	/*return SelfCover(dll_handle);*/
+	return 0;
 }
 

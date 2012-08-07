@@ -10,4 +10,6 @@
 #define SELFCOVERDLL_API __declspec(dllimport)
 #endif
 
+extern SELFCOVERDLL_API HMODULE dll_handle;
+
 SELFCOVERDLL_API int SelfCoverDll(void);
