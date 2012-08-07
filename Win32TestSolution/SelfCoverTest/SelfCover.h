@@ -9,7 +9,7 @@ void CoutModuleFileName(HMODULE module)
 	std::wcout<<path;
 }
 
-int SelfCover(HMODULE module, AppUpgradeUtil& util)
+int SelfCover(HMODULE module, LPCTSTR log_file)
 {
 	TCHAR path[MAX_PATH + 1];
 	GetModuleFileName(module, path, MAX_PATH);
@@ -19,8 +19,7 @@ int SelfCover(HMODULE module, AppUpgradeUtil& util)
 
 	std::wstring tmp = path;
 
-	util.FileReplace(tmp.c_str(), (tmp + TEXT(".new")).c_str());
-	//AppUpgradeUtil::FileReplace(tmp.c_str(), (tmp + TEXT(".new")).c_str());
+	AppUpgradeUtil::FileReplace(path, (tmp + TEXT(".new")).c_str(), log_file);
 
 	return 0;
 

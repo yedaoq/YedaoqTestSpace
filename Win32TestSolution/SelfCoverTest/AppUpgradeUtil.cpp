@@ -3,26 +3,7 @@
 #include <Shlwapi.h>
 
 #pragma comment(lib, "shlwapi.lib")
-
-#define OBSOLETEFILESUFFIX TEXT("*.obsolete")
-
-struct scoped_current_dir
-{
-	scoped_current_dir(LPCTSTR tmp_cur_dir)
-	{
-		GetCurrentDirectory(MAX_PATH, origin_cur_dir);
-		origin_cur_dir[MAX_PATH] = '\0';
-		SetCurrentDirectory(tmp_cur_dir);
-	}
-
-	~scoped_current_dir()
-	{
-		SetCurrentDirectory(origin_cur_dir);
-	}
-
-protected:
-	TCHAR origin_cur_dir[MAX_PATH + 1];
-};
+#define OBSOLETEFILESUFFIX TEXT(".obsolete")
 
 INT AppUpgradeUtil::ClearObsoleteFile(LPCTSTR app_dir, BOOL clear_sub_dir)
 {
@@ -89,38 +70,39 @@ INT AppUpgradeUtil::ClearObsoleteFile(LPCTSTR app_dir, BOOL clear_sub_dir)
 	return 1;
 }
 
-INT AppUpgradeUtil::ClearObsoleteFile()
-{	
-	pugi::xml_node xnode = update_log_xml_.root().child(TEXT("UpdateLog")).child(TEXT("ObsoleteFiles"));
-	xnode = xnode.child(TEXT("File"));
+void AppUpgradeUtil::ClearObsoleteFile(LPCTSTR log_file)
+{
+	if(!log_file || !log_file[0])
+		return;
+
+	pugi::xml_document xdoc;
+	if(!xdoc.load_file(log_file))
+		return;
+
+	pugi::xml_node xnode = xdoc.child(TEXT("UpdateLog")).child(TEXT("ObsoleteFiles")).child(TEXT("File"));
 	while(xnode)
 	{
 		pugi::xml_node xtemp = xnode;
 		xnode = xnode.next_sibling(TEXT("File"));
-		::DeleteFile(xtemp.attribute(TEXT("Path")).value());
-		xtemp.parent().remove_child(xtemp);
+
+		LPCTSTR file_name = xtemp.attribute(TEXT("Path")).value();
+		if (!file_name || !file_name[0] || ::DeleteFile(xtemp.attribute(TEXT("Path")).value()) || 0 != _taccess(file_name, 0))
+		{
+			xtemp.parent().remove_child(xtemp);
+		}
 	}
-	return 0;
+	xdoc.save_file(log_file);
 }
 
-BOOL AppUpgradeUtil::FileReplace( LPCTSTR target, LPCTSTR src )
+BOOL AppUpgradeUtil::FileReplace( LPCTSTR target, LPCTSTR src, LPCTSTR log_file )
 {
 	if(target)
 	{
 		if(0 == _taccess(target, 0))	// if target exist, try to remove it
 		{
-			if(NULL != GetModuleHandle(target))
-			{
-				ObsoleteFile(target);
-			}
-			else if(!::DeleteFile(target))
-			{
-				ObsoleteFile(target);
-			}
+			if(!ObsoleteFile(target, log_file))
+				return FALSE;
 		}
-		
-		if(0 == _taccess(target, 0))	// if remove fault, then fail
-			return FALSE;
 	}
 
 	if(src)
@@ -128,10 +110,10 @@ BOOL AppUpgradeUtil::FileReplace( LPCTSTR target, LPCTSTR src )
 		return ::MoveFile(src, target);
 	}
 
-	return FALSE;
+	return TRUE;
 }
 
-BOOL AppUpgradeUtil::ObsoleteFile( LPCTSTR target )
+BOOL AppUpgradeUtil::ObsoleteFile( LPCTSTR target, LPCTSTR log_file )
 {
 	TCHAR file_name[MAX_PATH + 1];
 	StrCpy(file_name, target);
@@ -141,54 +123,38 @@ BOOL AppUpgradeUtil::ObsoleteFile( LPCTSTR target )
 	BOOL bRet = ::MoveFile(target, file_name);
 	if(bRet)
 	{
-		pugi::xml_node xnode = update_log_xml_.root().child(TEXT("UpdateLog")).child(TEXT("ObsoleteFiles"));
-		xnode = xnode.append_child(TEXT("File"));
-		pugi::xml_attribute xattr = xnode.append_attribute(TEXT("Path"));
-		xattr.set_value(file_name);
+		WriteLog4ObsoleteFile(target, file_name, log_file);
 	}
 	return bRet;
 }
 
-AppUpgradeUtil::AppUpgradeUtil()
+BOOL AppUpgradeUtil::WriteLog4ObsoleteFile(LPCTSTR target_file, LPCTSTR obsolete_file, LPCTSTR log_file )
 {
-	update_log_name_[0] = 0;
-}
-
-BOOL AppUpgradeUtil::SetLogFileName( LPCTSTR file_name )
-{
-	if(!file_name || !file_name[0])
+	if(!obsolete_file || !log_file || !log_file[0])
 		return FALSE;
-	
-	StrCpy(update_log_name_, file_name);
 
-	if(!update_log_xml_.load_file(file_name))
-	{
-		update_log_xml_.reset();
-	}
-	
-	pugi::xml_node xnode = update_log_xml_.root();
-	if(!update_log_xml_.root().child(TEXT("UpdateLog")))
-	{
-		xnode = update_log_xml_.root().append_child(TEXT("UpdateLog"));
-	}
-	else
-	{
-		xnode = update_log_xml_.root().child(TEXT("UpdateLog"));
-	}
+	pugi::xml_document xdoc;
+	xdoc.load_file(log_file);
+	pugi::xml_node xnode = xdoc.child(TEXT("UpdateLog"));
 
-	if(!xnode.child(TEXT("ObsoleteFiles")))
+	if(!xnode)
 	{
+		xnode = xdoc.append_child(TEXT("UpdateLog"));
 		xnode = xnode.append_child(TEXT("ObsoleteFiles"));
 	}
 	else
 	{
-		xnode = xnode.child(TEXT("ObsoleteFiles"));
+		if(!xnode.child(TEXT("ObsoleteFiles")))
+			xnode = xnode.append_child(TEXT("ObsoleteFiles"));
+		else
+			xnode = xnode.child(TEXT("ObsoleteFiles"));
 	}
 
-	return TRUE;
-}
+	xnode = xnode.append_child(TEXT("File"));
+	xnode.append_attribute(TEXT("Path")).set_value(obsolete_file);
+	xnode.append_attribute(TEXT("target")).set_value(target_file);
 
-BOOL AppUpgradeUtil::SaveLogFile()
-{
-	return update_log_xml_.save_file(update_log_name_);
+	xdoc.save_file(log_file);
+
+	return TRUE;
 }

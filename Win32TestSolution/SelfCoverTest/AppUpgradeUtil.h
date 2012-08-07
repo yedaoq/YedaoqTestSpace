@@ -15,20 +15,12 @@
 class AppUpgradeUtil
 {
 public:
-	AppUpgradeUtil();
-
-	BOOL SetLogFileName(LPCTSTR file_name);
-	LPCTSTR GetLogFileName() const { return update_log_name_; };
-	BOOL SaveLogFile();
-
-	INT	ClearObsoleteFile(LPCTSTR app_dir, BOOL clear_sub_dir);
-	INT	ClearObsoleteFile();
-	BOOL ObsoleteFile(LPCTSTR target);
-	BOOL FileReplace(LPCTSTR target, LPCTSTR src);
-	
-protected:
-	TCHAR update_log_name_[MAX_PATH + 1];
-	pugi::xml_document update_log_xml_;
+	static void	ClearObsoleteFile(LPCTSTR log_file);
+	static BOOL FileReplace(LPCTSTR target, LPCTSTR src, LPCTSTR log_file);
+private:
+	static BOOL ObsoleteFile(LPCTSTR target, LPCTSTR log_file);
+	static INT	ClearObsoleteFile(LPCTSTR app_dir, BOOL clear_sub_dir);
+	static BOOL WriteLog4ObsoleteFile(LPCTSTR target_file, LPCTSTR obsolete_file, LPCTSTR log_file);
 };
 
 #endif // _AppUpgradeUtil_h__

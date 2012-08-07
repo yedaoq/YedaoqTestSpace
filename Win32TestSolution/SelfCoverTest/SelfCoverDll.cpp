@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "SelfCoverDll.h"
-#include "SelfCover.h"
 
 HMODULE dll_handle = 0;
 

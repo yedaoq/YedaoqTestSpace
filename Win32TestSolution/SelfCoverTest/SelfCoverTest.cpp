@@ -6,14 +6,11 @@
 #include "SelfCoverDll.h"
 #include "AppUpgradeUtil.h"
 
-AppUpgradeUtil g_uputil;
-
 void _tmain(int argc, _TCHAR* argv[])
 {
 	TCHAR buf[MAX_PATH + 1];
 	GetCurrentDirectory(MAX_PATH, buf);
 	::PathAppend(buf, TEXT("update.xml"));
-	g_uputil.SetLogFileName(buf);
 
 	std::cout<<"=======================================\n-> ³ÌÐò×Ô¸²¸Ç²âÊÔ: 0 - EXE, 1 - DLL1, 2 - Clear\n\n";
 
@@ -24,22 +21,19 @@ void _tmain(int argc, _TCHAR* argv[])
 		std::cin>>i;
 		if(0 == i)
 		{
-			SelfCover(0, g_uputil);
+			SelfCover(0, buf);
 		}
 		else if(1 == i)
 		{
-			SelfCover(dll_handle, g_uputil);
+			SelfCover(dll_handle, buf);
 		}
 		else if(2 == i)
 		{
-			//AppUpgradeUtil::ClearObsoleteFile(buf, true);
-			g_uputil.ClearObsoleteFile();
+			AppUpgradeUtil::ClearObsoleteFile(buf);
 		}
 		else
 			break;
 	}
-
-	g_uputil.SaveLogFile();
 }
 
 
