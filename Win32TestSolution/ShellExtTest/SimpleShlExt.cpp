@@ -10,8 +10,10 @@
 HRESULT CSimpleShlExt::Initialize ( LPCITEMIDLIST pidlFolder, LPDATAOBJECT pDataObj, HKEY hProgID )  
 {
 	//MessageBox(NULL, TEXT("test"), TEXT("test"), MB_OK);
-	CCreateProcessHelper::CreateProcessDetached(TEXT("E:\\YedaoqTestSpace\\Win32TestSolution\\ResLoadTest\\Debug\\ResLoadTest.exe"), 0);
-	
+	//CCreateProcessHelper::CreateProcessDetached(TEXT("E:\\YedaoqTestSpace\\Win32TestSolution\\ResLoadTest\\Debug\\ResLoadTest.exe"), 0);
+
+	return S_OK;
+
 	FORMATETC fmt = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL }; 
 	STGMEDIUM stg = { TYMED_HGLOBAL };
 	TCHAR	buf[MAX_PATH];
@@ -25,8 +27,8 @@ HRESULT CSimpleShlExt::Initialize ( LPCITEMIDLIST pidlFolder, LPDATAOBJECT pData
 		SHGetPathFromIDList(pidlFolder, buf);
 
 		// 2. 根据pidlFolder查询文件夹路径的方法2 , available above vista
-		wchar_t* ret;
-		SHGetNameFromIDList(pidlFolder, SIGDN_FILESYSPATH, &ret);		
+		//wchar_t* ret;
+		//SHGetNameFromIDList(pidlFolder, SIGDN_FILESYSPATH, &ret);		
 
 		return S_OK;
 	}
@@ -80,7 +82,8 @@ HRESULT CSimpleShlExt::QueryContextMenu ( HMENU hmenu, UINT uMenuIndex, UINT uid
 
 HRESULT CSimpleShlExt::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo )
 {
-	MessageBox(NULL, TEXT("HAHA"), TEXT("tip"), MB_OK);
+	SHSetValue(HKEY_CURRENT_USER, TEXT("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), TEXT("WriteByShlEx"), REG_SZ, TEXT("test"), 5 * sizeof(TCHAR));
+	//MessageBox(NULL, TEXT("HAHA"), TEXT("tip"), MB_OK);
 	return S_OK;
 }
 

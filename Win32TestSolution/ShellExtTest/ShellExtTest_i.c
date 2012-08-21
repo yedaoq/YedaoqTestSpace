@@ -6,7 +6,7 @@
 
 
  /* File created by MIDL compiler version 7.00.0555 */
-/* at Thu Jul 12 12:33:41 2012
+/* at Fri Aug 10 13:06:26 2012
  */
 /* Compiler settings for ShellExtTest.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
