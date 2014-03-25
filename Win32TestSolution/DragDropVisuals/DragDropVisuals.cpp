@@ -180,6 +180,62 @@ void CDragDropVisualsApp::_BindUI()
             CoTaskMemFree(psz);
         }
 
+		SetDlgItemText(_hdlg, IDC_PARENTPARSE, NULL);
+		hr = psi->GetDisplayName(SIGDN_PARENTRELATIVEPARSING, &psz);
+		if (SUCCEEDED(hr))
+		{
+			SetDlgItemText(_hdlg, IDC_PARENTPARSE, psz);
+			CoTaskMemFree(psz);
+		}
+
+		SetDlgItemText(_hdlg, IDC_PARENTADDRESS, NULL);
+		hr = psi->GetDisplayName(SIGDN_PARENTRELATIVEFORADDRESSBAR, &psz);
+		if (SUCCEEDED(hr))
+		{
+			SetDlgItemText(_hdlg, IDC_PARENTADDRESS, psz);
+			CoTaskMemFree(psz);
+		}
+
+		SetDlgItemText(_hdlg, IDC_PARENTEDIT, NULL);
+		hr = psi->GetDisplayName(SIGDN_PARENTRELATIVEEDITING, &psz);
+		if (SUCCEEDED(hr))
+		{
+			SetDlgItemText(_hdlg, IDC_PARENTEDIT, psz);
+			CoTaskMemFree(psz);
+		}
+
+		SetDlgItemText(_hdlg, IDC_PARSING, NULL);
+		hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &psz);
+		if (SUCCEEDED(hr))
+		{
+			SetDlgItemText(_hdlg, IDC_PARSING, psz);
+			CoTaskMemFree(psz);
+		}
+
+		SetDlgItemText(_hdlg, IDC_EDIT, NULL);
+		hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEEDITING, &psz);
+		if (SUCCEEDED(hr))
+		{
+			SetDlgItemText(_hdlg, IDC_EDIT, psz);
+			CoTaskMemFree(psz);
+		}
+
+		SetDlgItemText(_hdlg, IDC_FS, NULL);
+		hr = psi->GetDisplayName(SIGDN_FILESYSPATH, &psz);
+		if (SUCCEEDED(hr))
+		{
+			SetDlgItemText(_hdlg, IDC_FS, psz);
+			CoTaskMemFree(psz);
+		}
+
+		SetDlgItemText(_hdlg, IDC_URL, NULL);
+		hr = psi->GetDisplayName(SIGDN_URL, &psz);
+		if (SUCCEEDED(hr))
+		{
+			SetDlgItemText(_hdlg, IDC_URL, psz);
+			CoTaskMemFree(psz);
+		}
+
         SFGAOF sfgaof;
         hr = psi->GetAttributes(SFGAO_CANCOPY| SFGAO_CANLINK | SFGAO_CANMOVE, &sfgaof);
         if (SUCCEEDED(hr))

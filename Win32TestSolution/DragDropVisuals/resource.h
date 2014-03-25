@@ -14,3 +14,10 @@
 #define IDC_CLEAR                       105
 #define IDC_ATTRIBUTES                  106
 #define IDC_CUSTOM_DATAOBJECT           107
+#define IDC_PARENTPARSE					108
+#define IDC_PARENTADDRESS				109
+#define IDC_PARENTEDIT					110
+#define IDC_PARSING						111
+#define IDC_EDIT						112
+#define IDC_FS							113
+#define IDC_URL							114
