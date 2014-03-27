@@ -51,6 +51,8 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_WM_DROPFILES()
 	ON_BN_CLICKED(IDC_ExtractEx, &CIconSizeDlg::OnBnClickedExtractex)
 	ON_BN_CLICKED(IDC_SETSM, &CIconSizeDlg::OnBnClickedSetsm)
+	ON_BN_CLICKED(IDC_LoadImage, &CIconSizeDlg::OnBnClickedLoadimage)
+	ON_BN_CLICKED(IDC_IExtract, &CIconSizeDlg::OnBnClickedIextract)
 END_MESSAGE_MAP()
 
 
@@ -227,4 +229,86 @@ void CIconSizeDlg::OnBnClickedExtractex()
 void CIconSizeDlg::OnBnClickedSetsm()
 {
 
+}
+
+void CIconSizeDlg::OnBnClickedLoadimage()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	HMODULE module = NULL;
+	if (!m_FilePath.IsEmpty())
+	{
+		module = LoadLibrary(m_FilePath);
+	}
+
+	DWORD fuLoad = 0;
+	if(m_FuLoad_VGAColor) fuLoad |= LR_VGACOLOR;
+	if(m_FuLoad_DefaultSize) fuLoad |= LR_DEFAULTSIZE;
+	if(m_FuLoad_MONOCHROME) fuLoad |= LR_MONOCHROME;
+	if(!module) fuLoad |= LR_LOADFROMFILE;
+
+	HICON hIcon = (HICON)LoadImage(module, module ? MAKEINTRESOURCE(m_IconIdx) : (LPCTSTR)m_FilePath, IMAGE_ICON, m_IconSize, m_IconSize, fuLoad);
+
+	if(hIcon)
+		DrawIcon(hIcon);
+	else
+		m_MsgError.SetWindowText(TEXT("LoadImage fail"));
+}
+
+void CIconSizeDlg::OnBnClickedIextract()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	PIDLIST_ABSOLUTE pidl = ILCreateFromPath(m_FilePath);
+	if(NULL == pidl)
+	{
+		m_MsgError.SetWindowText(TEXT("invalid path"));
+		return;
+	}
+
+	ATL::CComPtr<IShellFolder> shell_parent;
+	PCIDLIST_RELATIVE pidl_child;
+
+	HRESULT hr = SHBindToParent(pidl, IID_IShellFolder, (VOID**)&shell_parent, &pidl_child);
+	if(FAILED(hr))
+	{
+		m_MsgError.SetWindowText(TEXT("can not get item folder info"));
+		return;
+	}
+
+	ATL::CComPtr<IExtractIcon> icon_extractor;
+
+	hr = shell_parent->GetUIObjectOf(NULL, 1, &pidl_child, IID_IExtractIcon, NULL, (VOID**)&icon_extractor);
+	if(FAILED(hr))
+	{
+		m_MsgError.SetWindowText(TEXT("can not get item ui object"));
+		return;
+	}
+
+	TCHAR	buf[1024];
+	int		idx;
+	UINT   flag;
+
+	hr = icon_extractor->GetIconLocation(/*GIL_DEFAULTICON*/ GIL_FORSHELL, buf, ARRAYSIZE(buf), &idx, &flag);
+	if (FAILED(hr))
+	{
+		m_MsgError.SetWindowText(TEXT("can not get item icon location"));
+		return;
+	}
+
+	HICON hIcon = NULL;
+
+	hr = icon_extractor->Extract(buf, idx, &hIcon, NULL, m_IconSize);
+	if(FAILED(hr))
+	{
+		m_MsgError.SetWindowText(TEXT("can not get item icon"));
+		return;
+	}
+
+	DrawIcon(hIcon);
+	
 }

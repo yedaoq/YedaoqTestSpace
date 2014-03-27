@@ -53,4 +53,6 @@ public:
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnBnClickedExtractex();
 	afx_msg void OnBnClickedSetsm();
+	afx_msg void OnBnClickedLoadimage();
+	afx_msg void OnBnClickedIextract();
 };
