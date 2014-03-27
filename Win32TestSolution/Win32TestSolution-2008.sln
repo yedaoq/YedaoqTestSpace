@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DragDropVisuals", "DragDrop
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowExiter", "WindowExiter\WindowExiter.vcproj", "{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoadIconBySize", "LoadIconBySize\LoadIconBySize.vcproj", "{C417EBF5-34D7-4641-B366-AAB0DCC5BF25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -27,6 +29,12 @@ Global
 		{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}.Release|Win32.ActiveCfg = Release|Win32
 		{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}.Release|Win32.Build.0 = Release|Win32
 		{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}.Release|x64.ActiveCfg = Release|Win32
+		{C417EBF5-34D7-4641-B366-AAB0DCC5BF25}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C417EBF5-34D7-4641-B366-AAB0DCC5BF25}.Debug|Win32.Build.0 = Debug|Win32
+		{C417EBF5-34D7-4641-B366-AAB0DCC5BF25}.Debug|x64.ActiveCfg = Debug|Win32
+		{C417EBF5-34D7-4641-B366-AAB0DCC5BF25}.Release|Win32.ActiveCfg = Release|Win32
+		{C417EBF5-34D7-4641-B366-AAB0DCC5BF25}.Release|Win32.Build.0 = Release|Win32
+		{C417EBF5-34D7-4641-B366-AAB0DCC5BF25}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
