@@ -60,4 +60,5 @@ public:
 	afx_msg void OnBnClickedLoadimage();
 	afx_msg void OnBnClickedIextract();
 	afx_msg void OnBnClickedIextractimage();
+	afx_msg void OnBnClickedShget();
 };

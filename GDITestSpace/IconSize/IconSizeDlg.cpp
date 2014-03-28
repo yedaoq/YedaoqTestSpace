@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "IconSize.h"
 #include "IconSizeDlg.h"
+#include <Strsafe.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -54,6 +55,7 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_BN_CLICKED(IDC_LoadImage, &CIconSizeDlg::OnBnClickedLoadimage)
 	ON_BN_CLICKED(IDC_IExtract, &CIconSizeDlg::OnBnClickedIextract)
 	ON_BN_CLICKED(IDC_IEXTRACTIMAGE, &CIconSizeDlg::OnBnClickedIextractimage)
+	ON_BN_CLICKED(IDC_SHGET, &CIconSizeDlg::OnBnClickedShget)
 END_MESSAGE_MAP()
 
 
@@ -312,15 +314,15 @@ void CIconSizeDlg::OnBnClickedIextract()
 
 	HICON hIcon = NULL;
 
-	hr = icon_extractor->Extract(buf, idx, &hIcon, NULL, m_IconSize);
-	if(FAILED(hr))
-	{
-		m_MsgError.SetWindowText(TEXT("can not get item icon"));
-		return;
-	}
+	TCHAR tmp[1024];
+	StringCbPrintf(tmp, ARRAYSIZE(tmp), TEXT("%s,%d"), buf, idx);
+	m_MsgError.SetWindowText(tmp);
 
-	DrawIcon(hIcon);
-	
+	hr = icon_extractor->Extract(buf, idx, &hIcon, NULL, m_IconSize);
+	if(SUCCEEDED(hr))
+	{		
+		DrawIcon(hIcon);
+	}
 }
 
 void CIconSizeDlg::OnBnClickedIextractimage()
@@ -385,4 +387,36 @@ void CIconSizeDlg::SetStaticImageType( HWND hWndStatic, DWORD image_style )
 	style |= image_style;
 
 	SetWindowLong(hWndStatic, GWL_STYLE, style);
+}
+
+void CIconSizeDlg::OnBnClickedShget()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	PIDLIST_ABSOLUTE pidl = ILCreateFromPath(m_FilePath);
+	if(NULL == pidl)
+	{
+		m_MsgError.SetWindowText(TEXT("invalid path"));
+		return;
+	}
+
+	SHFILEINFO info;
+	BOOL ret = (BOOL)SHGetFileInfo((LPCTSTR)pidl, NULL, &info, sizeof(info), SHGFI_ICONLOCATION | SHGFI_PIDL);
+	
+	TCHAR tmp[1024];
+	StringCbPrintf(tmp, ARRAYSIZE(tmp), TEXT("%s,%d"), info.szDisplayName, info.iIcon);
+	m_MsgError.SetWindowText(tmp);
+
+	ret = (BOOL)SHGetFileInfo((LPCTSTR)pidl, NULL, &info, sizeof(info), SHGFI_ICON | SHGFI_LARGEICON | SHGFI_PIDL);
+
+	if(info.hIcon)
+		DrawIcon(info.hIcon);
+
+	ret = (BOOL)SHGetFileInfo((LPCTSTR)pidl, NULL, &info, sizeof(info), SHGFI_ICON | SHGFI_SMALLICON | SHGFI_PIDL);
+
+	if(info.hIcon)
+		DrawIcon(info.hIcon);
+	
 }

@@ -30,6 +30,8 @@
 #define IDC_SETSM                       1022
 #define IDC_IExtract                    1023
 #define IDC_IEXTRACTIMAGE               1025
+#define IDC_BUTTON2                     1026
+#define IDC_SHGET                       1026
 
 // Next default values for new objects
 // 
@@ -37,7 +39,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1025
+#define _APS_NEXT_CONTROL_VALUE         1027
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
