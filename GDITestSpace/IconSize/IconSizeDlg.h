@@ -20,7 +20,11 @@ public:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 
 	void ResetDraw();
+
+	void SetStaticImageType(HWND hWndStatic, DWORD style);
+
 	void DrawIcon(HICON hIcon);
+	void DrawIcon(HBITMAP hBmp);
 
 // 实现
 protected:
@@ -55,4 +59,5 @@ public:
 	afx_msg void OnBnClickedSetsm();
 	afx_msg void OnBnClickedLoadimage();
 	afx_msg void OnBnClickedIextract();
+	afx_msg void OnBnClickedIextractimage();
 };

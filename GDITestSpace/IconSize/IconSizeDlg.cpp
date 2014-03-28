@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_BN_CLICKED(IDC_SETSM, &CIconSizeDlg::OnBnClickedSetsm)
 	ON_BN_CLICKED(IDC_LoadImage, &CIconSizeDlg::OnBnClickedLoadimage)
 	ON_BN_CLICKED(IDC_IExtract, &CIconSizeDlg::OnBnClickedIextract)
+	ON_BN_CLICKED(IDC_IEXTRACTIMAGE, &CIconSizeDlg::OnBnClickedIextractimage)
 END_MESSAGE_MAP()
 
 
@@ -131,7 +132,16 @@ void CIconSizeDlg::ResetDraw()
 
 void CIconSizeDlg::DrawIcon( HICON hIcon )
 {
-	::SendMessage(::GetDlgItem(m_hWnd, m_DrawTargetID++), STM_SETICON, (WPARAM) hIcon, NULL);
+	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
+	SetStaticImageType(hWndStatic, SS_ICON);
+	::SendMessage(hWndStatic, STM_SETICON, (WPARAM) hIcon, NULL);
+}
+
+void CIconSizeDlg::DrawIcon( HBITMAP hBmp )
+{
+	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
+	SetStaticImageType(hWndStatic, SS_BITMAP);
+	::SendMessage(hWndStatic, STM_SETIMAGE, (WPARAM) hBmp, NULL);
 }
 
 
@@ -290,10 +300,10 @@ void CIconSizeDlg::OnBnClickedIextract()
 	}
 
 	TCHAR	buf[1024];
-	int		idx;
-	UINT   flag;
+	int		idx = 0;
+	UINT   flag = 0;
 
-	hr = icon_extractor->GetIconLocation(/*GIL_DEFAULTICON*/ GIL_FORSHELL, buf, ARRAYSIZE(buf), &idx, &flag);
+	hr = icon_extractor->GetIconLocation(/*GIL_DEFAULTICON |*/ GIL_FORSHELL, buf, ARRAYSIZE(buf), &idx, &flag);
 	if (FAILED(hr))
 	{
 		m_MsgError.SetWindowText(TEXT("can not get item icon location"));
@@ -311,4 +321,68 @@ void CIconSizeDlg::OnBnClickedIextract()
 
 	DrawIcon(hIcon);
 	
+}
+
+void CIconSizeDlg::OnBnClickedIextractimage()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	PIDLIST_ABSOLUTE pidl = ILCreateFromPath(m_FilePath);
+	if(NULL == pidl)
+	{
+		m_MsgError.SetWindowText(TEXT("invalid path"));
+		return;
+	}
+
+	ATL::CComPtr<IShellFolder> shell_parent;
+	PCIDLIST_RELATIVE pidl_child;
+
+	HRESULT hr = SHBindToParent(pidl, IID_IShellFolder, (VOID**)&shell_parent, &pidl_child);
+	if(FAILED(hr))
+	{
+		m_MsgError.SetWindowText(TEXT("can not get item folder info"));
+		return;
+	}
+
+	ATL::CComPtr<IExtractImage> image_extracter;
+
+	hr = shell_parent->GetUIObjectOf(NULL, 1, &pidl_child, IID_IExtractImage, NULL, (VOID**)&image_extracter);
+	if(FAILED(hr))
+	{
+		m_MsgError.SetWindowText(TEXT("can not get item image object"));
+		return;
+	}
+
+	SIZE size = { m_IconSize, m_IconSize };
+	DWORD dwPriority = 0, dwFlags = IEIFLAG_ASPECT;
+	WCHAR pszImagePath[MAX_PATH + 1];
+	hr = image_extracter->GetLocation(pszImagePath, MAX_PATH, &dwPriority, &size, 32, &dwFlags); 
+	if (SUCCEEDED(hr))
+	{
+		HBITMAP hThumbnail;
+		hr = image_extracter->Extract(&hThumbnail); 
+
+		if(SUCCEEDED(hr))
+		{
+			DrawIcon(hThumbnail);
+		}
+		else
+		{
+			m_MsgError.SetWindowText(TEXT("can not get item image "));
+		}
+	}
+	{
+		m_MsgError.SetWindowText(TEXT("can not get item image location"));
+	}
+}
+
+void CIconSizeDlg::SetStaticImageType( HWND hWndStatic, DWORD image_style )
+{
+	DWORD style = GetWindowLong(hWndStatic, GWL_STYLE);
+	style &= ~(SS_BITMAP | SS_ICON);
+	style |= image_style;
+
+	SetWindowLong(hWndStatic, GWL_STYLE, style);
 }

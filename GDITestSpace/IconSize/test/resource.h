@@ -2,11 +2,11 @@
 // Microsoft Visual C++ generated include file.
 // Used by test1.rc
 //
-#define IDI_ICON1                       105
-#define IDI_ICON2                       106
-#define IDI_ICON3                       107
-#define IDI_ICON4                       108
-#define IDI_ICON5                       109
+#define IDI_ICON1                       100
+#define IDI_ICON2                       101
+#define IDI_ICON3                       102
+#define IDI_ICON4                       103
+#define IDI_ICON5                       104
 
 // Next default values for new objects
 // 

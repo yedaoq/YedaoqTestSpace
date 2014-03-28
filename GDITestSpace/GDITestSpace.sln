@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IconSize", "IconSize\IconSize.vcproj", "{2204A5B1-A0AF-49DF-8142-5A53831BE531}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcproj", "{4A42DF83-D34F-47F9-8310-41004591245E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "IconSize\test\test.vcproj", "{A9AE74BA-2804-413E-BC76-4817CCB4E5CB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "IconSize\test\testdll.vcproj", "{4A42DF83-D34F-47F9-8310-41004591245E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2204A5B1-A0AF-49DF-8142-5A53831BE531}.Debug|Win32.Build.0 = Debug|Win32
 		{2204A5B1-A0AF-49DF-8142-5A53831BE531}.Release|Win32.ActiveCfg = Release|Win32
 		{2204A5B1-A0AF-49DF-8142-5A53831BE531}.Release|Win32.Build.0 = Release|Win32
+		{A9AE74BA-2804-413E-BC76-4817CCB4E5CB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A9AE74BA-2804-413E-BC76-4817CCB4E5CB}.Debug|Win32.Build.0 = Debug|Win32
+		{A9AE74BA-2804-413E-BC76-4817CCB4E5CB}.Release|Win32.ActiveCfg = Release|Win32
+		{A9AE74BA-2804-413E-BC76-4817CCB4E5CB}.Release|Win32.Build.0 = Release|Win32
 		{4A42DF83-D34F-47F9-8310-41004591245E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4A42DF83-D34F-47F9-8310-41004591245E}.Debug|Win32.Build.0 = Debug|Win32
 		{4A42DF83-D34F-47F9-8310-41004591245E}.Release|Win32.ActiveCfg = Release|Win32
