@@ -249,10 +249,27 @@ void CIconSizeDlg::OnBnClickedLoadimage()
 
 	ResetDraw();
 
-	HMODULE module = NULL;
-	if (!m_FilePath.IsEmpty())
+	HMODULE module = NULL;	
+	UINT	image_type = IMAGE_ICON;
+	
+	if (m_FilePath.IsEmpty())
+	{
+		return;
+	}
+
+	LPCTSTR file_ext = PathFindExtension(m_FilePath);
+	if(0 ==_tcsicmp(file_ext, TEXT(".exe")) || 0 == _tcsicmp(file_ext, TEXT(".dll")))
 	{
 		module = LoadLibrary(m_FilePath);
+		if(!module)
+		{
+			m_MsgError.SetWindowText(TEXT("LoadLibrary fail"));
+			return;
+		}
+	}
+	else if(_tcsicmp(file_ext, TEXT(".bmp")))
+	{
+		image_type = IMAGE_BITMAP;
 	}
 
 	DWORD fuLoad = 0;
@@ -261,7 +278,7 @@ void CIconSizeDlg::OnBnClickedLoadimage()
 	if(m_FuLoad_MONOCHROME) fuLoad |= LR_MONOCHROME;
 	if(!module) fuLoad |= LR_LOADFROMFILE;
 
-	HICON hIcon = (HICON)LoadImage(module, module ? MAKEINTRESOURCE(m_IconIdx) : (LPCTSTR)m_FilePath, IMAGE_ICON, m_IconSize, m_IconSize, fuLoad);
+	HICON hIcon = (HICON)LoadImage(module, module ? MAKEINTRESOURCE(m_IconIdx) : (LPCTSTR)m_FilePath, image_type, m_IconSize, m_IconSize, fuLoad);
 
 	if(hIcon)
 		DrawIcon(hIcon);
@@ -375,6 +392,7 @@ void CIconSizeDlg::OnBnClickedIextractimage()
 			m_MsgError.SetWindowText(TEXT("can not get item image "));
 		}
 	}
+	else
 	{
 		m_MsgError.SetWindowText(TEXT("can not get item image location"));
 	}

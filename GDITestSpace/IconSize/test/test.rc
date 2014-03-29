@@ -59,6 +59,7 @@ IDI_ICON2               ICON                    "no16.ico"
 IDI_ICON3               ICON                    "no32.ico"
 IDI_ICON4               ICON                    "no1632.ico"
 IDI_ICON5               ICON                    "test.ico"
+IDI_ICON6				ICON					"eXeScope.ico"
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
