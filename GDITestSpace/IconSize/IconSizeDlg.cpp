@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_BN_CLICKED(IDC_IExtract, &CIconSizeDlg::OnBnClickedIextract)
 	ON_BN_CLICKED(IDC_IEXTRACTIMAGE, &CIconSizeDlg::OnBnClickedIextractimage)
 	ON_BN_CLICKED(IDC_SHGET, &CIconSizeDlg::OnBnClickedShget)
+	ON_BN_CLICKED(IDC_SHDEFEXTRACT, &CIconSizeDlg::OnBnClickedShdefextract)
 END_MESSAGE_MAP()
 
 
@@ -179,8 +180,6 @@ void CIconSizeDlg::OnBnClickedLoadicon()
 		m_MsgError.SetWindowText(TEXT("LoadLibrary fail"));
 }
 
-
-
 void CIconSizeDlg::OnBnClickedExtract()
 {
 	UpdateData(TRUE);
@@ -281,7 +280,12 @@ void CIconSizeDlg::OnBnClickedLoadimage()
 	HICON hIcon = (HICON)LoadImage(module, module ? MAKEINTRESOURCE(m_IconIdx) : (LPCTSTR)m_FilePath, image_type, m_IconSize, m_IconSize, fuLoad);
 
 	if(hIcon)
-		DrawIcon(hIcon);
+	{
+		if(IMAGE_ICON == image_type)
+			DrawIcon(hIcon);
+		else
+			DrawIcon((HBITMAP)hIcon);
+	}
 	else
 		m_MsgError.SetWindowText(TEXT("LoadImage fail"));
 }
@@ -437,4 +441,29 @@ void CIconSizeDlg::OnBnClickedShget()
 	if(info.hIcon)
 		DrawIcon(info.hIcon);
 	
+}
+
+void CIconSizeDlg::OnBnClickedShdefextract()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	if(!m_FilePath.IsEmpty())
+	{
+		HICON hIcon = NULL;
+		HICON hIconSmall = NULL;
+		HRESULT hr = SHDefExtractIcon(m_FilePath, m_IconIdx, 0 /*GIL_SIMULATEDOC*/, &hIcon, 0 /*&hIconSmall*/, m_IconSize);
+		if(hIcon)
+			DrawIcon(hIcon);
+		else
+			m_MsgError.SetWindowText(TEXT("SHDefExtractIcon fail"));
+
+		if(hIconSmall)
+			DrawIcon(hIconSmall);
+	}
+	else
+	{
+		m_MsgError.SetWindowText(TEXT("Please set file path"));
+	}
 }

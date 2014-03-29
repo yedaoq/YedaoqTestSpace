@@ -38,6 +38,14 @@ protected:
 
 	afx_msg void OnBnClickedLoadicon();
 	afx_msg void OnBnClickedExtract();
+	afx_msg void OnDropFiles(HDROP hDropInfo);
+	afx_msg void OnBnClickedExtractex();
+	afx_msg void OnBnClickedSetsm();
+	afx_msg void OnBnClickedLoadimage();
+	afx_msg void OnBnClickedIextract();
+	afx_msg void OnBnClickedIextractimage();
+	afx_msg void OnBnClickedShget();
+	afx_msg void OnBnClickedShdefextract();
 
 
 	DECLARE_MESSAGE_MAP()
@@ -54,11 +62,4 @@ public:
 	int m_CxSmallIcon;
 
 	CEdit m_MsgError;
-	afx_msg void OnDropFiles(HDROP hDropInfo);
-	afx_msg void OnBnClickedExtractex();
-	afx_msg void OnBnClickedSetsm();
-	afx_msg void OnBnClickedLoadimage();
-	afx_msg void OnBnClickedIextract();
-	afx_msg void OnBnClickedIextractimage();
-	afx_msg void OnBnClickedShget();
 };
