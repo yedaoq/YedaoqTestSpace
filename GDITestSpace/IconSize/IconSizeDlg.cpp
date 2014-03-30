@@ -7,10 +7,18 @@
 #include "IconSizeDlg.h"
 #include <Strsafe.h>
 
+#include <gdiplus.h>
+#include <shlwapi.h>
+
+#pragma comment(lib,"shell32.lib")
+#pragma comment(lib,"gdiplus.lib")
+#pragma comment(lib,"shlwapi.lib")
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+extern BOOL SaveIcon3(TCHAR *szIconFile, HICON hIcon[], int nNumIcons);
 
 // CIconSizeDlg ¶Ô»°¿ò
 CIconSizeDlg::CIconSizeDlg(CWnd* pParent /*=NULL*/)
@@ -57,6 +65,7 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_BN_CLICKED(IDC_IEXTRACTIMAGE, &CIconSizeDlg::OnBnClickedIextractimage)
 	ON_BN_CLICKED(IDC_SHGET, &CIconSizeDlg::OnBnClickedShget)
 	ON_BN_CLICKED(IDC_SHDEFEXTRACT, &CIconSizeDlg::OnBnClickedShdefextract)
+	ON_BN_CLICKED(IDC_GDIPLUSCOPY, &CIconSizeDlg::OnBnClickedGdipluscopy)
 END_MESSAGE_MAP()
 
 
@@ -136,15 +145,29 @@ void CIconSizeDlg::ResetDraw()
 void CIconSizeDlg::DrawIcon( HICON hIcon )
 {
 	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
-	SetStaticImageType(hWndStatic, SS_ICON);
+	//SetStaticImageType(hWndStatic, SS_ICON);
 	::SendMessage(hWndStatic, STM_SETICON, (WPARAM) hIcon, NULL);
+
+	SaveIcon3(TEXT("D:\\test.ico"), &hIcon, 1);
 }
 
 void CIconSizeDlg::DrawIcon( HBITMAP hBmp )
 {
+	ICONINFO info;
+	info.fIcon = 1;
+	info.hbmColor = hBmp;
+	info.hbmMask = NULL;
+
+	HICON hIcon = CreateIconIndirect(&info);
+
+	DrawIcon(hIcon);
+	return;
+
 	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
-	SetStaticImageType(hWndStatic, SS_BITMAP);
+	//SetStaticImageType(hWndStatic, SS_BITMAP);
 	::SendMessage(hWndStatic, STM_SETIMAGE, (WPARAM) hBmp, NULL);
+
+
 }
 
 
@@ -431,16 +454,25 @@ void CIconSizeDlg::OnBnClickedShget()
 	StringCbPrintf(tmp, ARRAYSIZE(tmp), TEXT("%s,%d"), info.szDisplayName, info.iIcon);
 	m_MsgError.SetWindowText(tmp);
 
+	HICON icon_large = NULL, icon_small = NULL;
+
 	ret = (BOOL)SHGetFileInfo((LPCTSTR)pidl, NULL, &info, sizeof(info), SHGFI_ICON | SHGFI_LARGEICON | SHGFI_PIDL);
 
 	if(info.hIcon)
+	{
+		icon_large = info.hIcon;
 		DrawIcon(info.hIcon);
+	}
 
 	ret = (BOOL)SHGetFileInfo((LPCTSTR)pidl, NULL, &info, sizeof(info), SHGFI_ICON | SHGFI_SMALLICON | SHGFI_PIDL);
 
 	if(info.hIcon)
+	{
+		icon_small = info.hIcon;
 		DrawIcon(info.hIcon);
-	
+	}
+
+	SaveIcon3(TEXT("D:\\test1.ico"), &icon_small, 2);
 }
 
 void CIconSizeDlg::OnBnClickedShdefextract()
@@ -466,4 +498,62 @@ void CIconSizeDlg::OnBnClickedShdefextract()
 	{
 		m_MsgError.SetWindowText(TEXT("Please set file path"));
 	}
+}
+
+void CIconSizeDlg::OnBnClickedGdipluscopy()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	Gdiplus::Bitmap* bitmap = Gdiplus::Bitmap::FromFile(m_FilePath);
+	if(!bitmap)
+	{
+		printf("load image fail\n");
+		return;
+	}
+
+	HICON hIcon = NULL;
+	if(Gdiplus::Ok != bitmap->GetHICON(&hIcon))
+	{
+		printf("get icon fail\n");
+		return;
+	}
+
+// 	HBITMAP hbmp=NULL;
+// 	if(Gdiplus::Ok != bitmap->GetHBITMAP(Gdiplus::Color.Transparent, &hbmp))
+// 	{
+// 		printf("get bmp fail\n");
+// 		return -1;
+// 	}
+// 
+// 	hbmp = (HBITMAP)CopyImage(hbmp, IMAGE_BITMAP, 128, 128, LR_COPYDELETEORG | LR_COPYRETURNORG);
+// 	if(!hbmp)
+// 	{
+// 		printf("copy bmp fail\n");
+// 		return -1;
+// 	}
+
+	hIcon = (HICON)CopyImage(hIcon, IMAGE_ICON, 512, 512, LR_COPYRETURNORG | LR_COPYDELETEORG);
+	if(!hIcon)
+	{
+		printf("copy icon fail\n");
+		return;
+	}
+
+	DrawIcon(hIcon);
+}
+
+GDIPlusInitialize::GDIPlusInitialize(void)
+: gdiplusToken_(0)
+{
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&gdiplusToken_, &gdiplusStartupInput, NULL);
+}
+
+GDIPlusInitialize::~GDIPlusInitialize(void)
+{
+	if(0 != gdiplusToken_)
+		Gdiplus::GdiplusShutdown(gdiplusToken_);
+
 }

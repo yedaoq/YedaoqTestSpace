@@ -5,6 +5,14 @@
 #pragma once
 #include "afxwin.h"
 
+class GDIPlusInitialize
+{
+	ULONG_PTR     gdiplusToken_;
+public:
+
+	GDIPlusInitialize();
+	~GDIPlusInitialize();
+};
 
 // CIconSizeDlg ¶Ô»°¿ò
 class CIconSizeDlg : public CDialog
@@ -62,4 +70,7 @@ public:
 	int m_CxSmallIcon;
 
 	CEdit m_MsgError;
+
+	GDIPlusInitialize gdi;
+	afx_msg void OnBnClickedGdipluscopy();
 };

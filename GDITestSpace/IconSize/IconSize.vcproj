@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SaveIcon.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
