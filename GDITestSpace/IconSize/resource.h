@@ -35,6 +35,8 @@
 #define IDC_SHDEFEXTRACT                1027
 #define IDC_BUTTON3                     1028
 #define IDC_GDIPLUSCOPY                 1028
+#define IDC_BUTTON4                     1029
+#define IDC_IMAGEFACTORY                1029
 
 // Next default values for new objects
 // 
@@ -42,7 +44,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1029
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

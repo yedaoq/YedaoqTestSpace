@@ -66,6 +66,7 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_BN_CLICKED(IDC_SHGET, &CIconSizeDlg::OnBnClickedShget)
 	ON_BN_CLICKED(IDC_SHDEFEXTRACT, &CIconSizeDlg::OnBnClickedShdefextract)
 	ON_BN_CLICKED(IDC_GDIPLUSCOPY, &CIconSizeDlg::OnBnClickedGdipluscopy)
+	ON_BN_CLICKED(IDC_IMAGEFACTORY, &CIconSizeDlg::OnBnClickedImagefactory)
 END_MESSAGE_MAP()
 
 
@@ -151,12 +152,26 @@ void CIconSizeDlg::DrawIcon( HICON hIcon )
 	SaveIcon3(TEXT("D:\\test.ico"), &hIcon, 1);
 }
 
+HBITMAP CreateVritualIconMask(HBITMAP bmColor)
+{
+	BITMAP bitmap;
+	if(sizeof(BITMAP) < GetObject(bmColor, sizeof(bitmap), &bitmap))
+		return NULL;
+
+	int row_width_in_bytes = ((bitmap.bmWidth + 31) / 32) * 4;
+	LPBYTE bmData = new BYTE[row_width_in_bytes * bitmap.bmHeight];
+	memset(bmData, 0, row_width_in_bytes * bitmap.bmHeight);
+
+	HBITMAP bmp = CreateBitmap(bitmap.bmWidth, bitmap.bmHeight, 1, 1, bmData);
+	return bmp;
+}
+
 void CIconSizeDlg::DrawIcon( HBITMAP hBmp )
 {
 	ICONINFO info;
 	info.fIcon = 1;
 	info.hbmColor = hBmp;
-	info.hbmMask = NULL;
+	info.hbmMask = CreateVritualIconMask(hBmp);
 
 	HICON hIcon = CreateIconIndirect(&info);
 
@@ -166,8 +181,6 @@ void CIconSizeDlg::DrawIcon( HBITMAP hBmp )
 	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
 	//SetStaticImageType(hWndStatic, SS_BITMAP);
 	::SendMessage(hWndStatic, STM_SETIMAGE, (WPARAM) hBmp, NULL);
-
-
 }
 
 
@@ -544,6 +557,38 @@ void CIconSizeDlg::OnBnClickedGdipluscopy()
 	DrawIcon(hIcon);
 }
 
+void CIconSizeDlg::OnBnClickedImagefactory()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	if(0 == m_IconSize) m_IconSize = 32;
+
+	PIDLIST_ABSOLUTE pidl = ILCreateFromPath(m_FilePath);
+	if(!pidl)
+	{
+		return;
+	}
+
+	ATL::CComPtr<IShellItem> shell_item;
+	HRESULT hr = SHCreateShellItem(NULL, NULL, pidl, &shell_item);
+
+	ATL::CComPtr<IShellItemImageFactory> psiif;
+	hr = shell_item->QueryInterface(IID_PPV_ARGS(&psiif));
+	HBITMAP hThumbnail = 0;
+	if (SUCCEEDED(hr))
+	{
+		const SIZE size = { m_IconSize, m_IconSize };
+		hr = psiif->GetImage(size, SIIGBF_RESIZETOFIT, &hThumbnail);
+		if(SUCCEEDED(hr))
+		{
+			DrawIcon(hThumbnail);
+		}
+	}
+	return ;
+}
+
 GDIPlusInitialize::GDIPlusInitialize(void)
 : gdiplusToken_(0)
 {
@@ -557,3 +602,4 @@ GDIPlusInitialize::~GDIPlusInitialize(void)
 		Gdiplus::GdiplusShutdown(gdiplusToken_);
 
 }
+

@@ -73,4 +73,5 @@ public:
 
 	GDIPlusInitialize gdi;
 	afx_msg void OnBnClickedGdipluscopy();
+	afx_msg void OnBnClickedImagefactory();
 };
