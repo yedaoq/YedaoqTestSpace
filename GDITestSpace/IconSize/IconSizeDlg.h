@@ -4,8 +4,15 @@
 
 #pragma once
 #include "afxwin.h"
-#include "ImageUtil.h"
 
+class GDIPlusInitialize
+{
+	ULONG_PTR     gdiplusToken_;
+public:
+
+	GDIPlusInitialize();
+	~GDIPlusInitialize();
+};
 
 // CIconSizeDlg ¶Ô»°¿ò
 class CIconSizeDlg : public CDialog
@@ -63,11 +70,7 @@ public:
 	int m_CxSmallIcon;
 
 	CEdit m_MsgError;
-	afx_msg void OnBnClickedExtcopy();
 
-	ImageUtil::GDIPlusInitialize gdiplus;
+	GDIPlusInitialize gdi;
+	afx_msg void OnBnClickedGdipluscopy();
 };
-
-bool IPicture2File( IPicture* pic, LPCTSTR path );
-bool IPicture2IStream( IPicture* pic, IStream** stream, LONG* size);
-bool IStream2File( IStream* stream, LPCTSTR path );

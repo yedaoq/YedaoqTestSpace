@@ -186,10 +186,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\IconSave.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\IconSize.cpp"
 				>
 			</File>
@@ -198,7 +194,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ImageUtil.cpp"
+				RelativePath=".\SaveIcon.cpp"
 				>
 			</File>
 			<File
@@ -228,19 +224,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\IconSave.h"
-				>
-			</File>
-			<File
 				RelativePath=".\IconSize.h"
 				>
 			</File>
 			<File
 				RelativePath=".\IconSizeDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ImageUtil.h"
 				>
 			</File>
 			<File
@@ -276,10 +264,6 @@
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
-			>
-		</File>
-		<File
-			RelativePath=".\xp.manifest"
 			>
 		</File>
 	</Files>

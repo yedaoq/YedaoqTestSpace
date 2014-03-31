@@ -6,12 +6,19 @@
 #include "IconSize.h"
 #include "IconSizeDlg.h"
 #include <Strsafe.h>
-#include "ImageUtil.h"
+
+#include <gdiplus.h>
+#include <shlwapi.h>
+
+#pragma comment(lib,"shell32.lib")
+#pragma comment(lib,"gdiplus.lib")
+#pragma comment(lib,"shlwapi.lib")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+extern BOOL SaveIcon3(TCHAR *szIconFile, HICON hIcon[], int nNumIcons);
 
 // CIconSizeDlg ¶Ô»°¿ò
 CIconSizeDlg::CIconSizeDlg(CWnd* pParent /*=NULL*/)
@@ -58,7 +65,7 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_BN_CLICKED(IDC_IEXTRACTIMAGE, &CIconSizeDlg::OnBnClickedIextractimage)
 	ON_BN_CLICKED(IDC_SHGET, &CIconSizeDlg::OnBnClickedShget)
 	ON_BN_CLICKED(IDC_SHDEFEXTRACT, &CIconSizeDlg::OnBnClickedShdefextract)
-	ON_BN_CLICKED(IDC_EXTCOPY, &CIconSizeDlg::OnBnClickedExtcopy)
+	ON_BN_CLICKED(IDC_GDIPLUSCOPY, &CIconSizeDlg::OnBnClickedGdipluscopy)
 END_MESSAGE_MAP()
 
 
@@ -138,29 +145,29 @@ void CIconSizeDlg::ResetDraw()
 void CIconSizeDlg::DrawIcon( HICON hIcon )
 {
 	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
-	SetStaticImageType(hWndStatic, SS_ICON);
+	//SetStaticImageType(hWndStatic, SS_ICON);
 	::SendMessage(hWndStatic, STM_SETICON, (WPARAM) hIcon, NULL);
 
-	TCHAR path[1024];
-	GetModuleFileName(NULL, path, ARRAYSIZE(path));
-	StringCbCopy(PathFindFileName(path), ARRAYSIZE(path), TEXT("save.bmp"));
-
-	ImageUtil::SaveIconAsPng(hIcon, path);
-
-// 	ATL::CComPtr<IPicture> pic;
-// 	PICTDESC picdesc;
-// 	picdesc.cbSizeofstruct = sizeof(PICTDESC);
-// 	picdesc.picType = PICTYPE_ICON;       
-// 	picdesc.icon.hicon = hIcon;
-// 	HRESULT hr = OleCreatePictureIndirect(&picdesc, IID_IPicture, TRUE,(VOID**)&pic);
-// 	IPicture2File(pic, path);
+	SaveIcon3(TEXT("D:\\test.ico"), &hIcon, 1);
 }
 
 void CIconSizeDlg::DrawIcon( HBITMAP hBmp )
 {
+	ICONINFO info;
+	info.fIcon = 1;
+	info.hbmColor = hBmp;
+	info.hbmMask = NULL;
+
+	HICON hIcon = CreateIconIndirect(&info);
+
+	DrawIcon(hIcon);
+	return;
+
 	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
-	SetStaticImageType(hWndStatic, SS_BITMAP);
+	//SetStaticImageType(hWndStatic, SS_BITMAP);
 	::SendMessage(hWndStatic, STM_SETIMAGE, (WPARAM) hBmp, NULL);
+
+
 }
 
 
@@ -207,36 +214,6 @@ void CIconSizeDlg::OnBnClickedExtract()
 		HICON hIcon = ExtractIcon(AfxGetInstanceHandle(), m_FilePath, m_IconIdx);
 		if(hIcon)
 			DrawIcon(hIcon);
-		else
-			m_MsgError.SetWindowText(TEXT("ExtractIcon fail"));
-	}
-	else
-		m_MsgError.SetWindowText(TEXT("Please set file path"));
-}
-
-void CIconSizeDlg::OnBnClickedExtcopy()
-{
-	UpdateData(TRUE);
-
-	ResetDraw();
-
-	if(!m_FilePath.IsEmpty())
-	{
-		HICON hIcon = ExtractIcon(AfxGetInstanceHandle(), m_FilePath, m_IconIdx);
-		if(hIcon)
-		{
-			if(m_IconSize != 0)
-			{
-				HICON hIconNew = (HICON)CopyImage(hIcon, IMAGE_ICON, m_IconSize, m_IconSize, LR_COPYRETURNORG);
-				if(hIcon != hIconNew)
-				{
-					DestroyIcon(hIcon);
-					hIcon = hIconNew;
-				}
-			}
-
-			DrawIcon(hIcon);
-		}
 		else
 			m_MsgError.SetWindowText(TEXT("ExtractIcon fail"));
 	}
@@ -477,16 +454,25 @@ void CIconSizeDlg::OnBnClickedShget()
 	StringCbPrintf(tmp, ARRAYSIZE(tmp), TEXT("%s,%d"), info.szDisplayName, info.iIcon);
 	m_MsgError.SetWindowText(tmp);
 
+	HICON icon_large = NULL, icon_small = NULL;
+
 	ret = (BOOL)SHGetFileInfo((LPCTSTR)pidl, NULL, &info, sizeof(info), SHGFI_ICON | SHGFI_LARGEICON | SHGFI_PIDL);
 
 	if(info.hIcon)
+	{
+		icon_large = info.hIcon;
 		DrawIcon(info.hIcon);
+	}
 
 	ret = (BOOL)SHGetFileInfo((LPCTSTR)pidl, NULL, &info, sizeof(info), SHGFI_ICON | SHGFI_SMALLICON | SHGFI_PIDL);
 
 	if(info.hIcon)
+	{
+		icon_small = info.hIcon;
 		DrawIcon(info.hIcon);
-	
+	}
+
+	SaveIcon3(TEXT("D:\\test1.ico"), &icon_small, 2);
 }
 
 void CIconSizeDlg::OnBnClickedShdefextract()
@@ -514,54 +500,60 @@ void CIconSizeDlg::OnBnClickedShdefextract()
 	}
 }
 
-bool IPicture2File( IPicture* pic, LPCTSTR path )
+void CIconSizeDlg::OnBnClickedGdipluscopy()
 {
-	IStream*	stream = NULL;
-	bool		result = false;
-	if(IPicture2IStream(pic, &stream, NULL))
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	Gdiplus::Bitmap* bitmap = Gdiplus::Bitmap::FromFile(m_FilePath);
+	if(!bitmap)
 	{
-		result = IStream2File(stream, path);
-		stream->Release();
+		printf("load image fail\n");
+		return;
 	}
-	return result;
+
+	HICON hIcon = NULL;
+	if(Gdiplus::Ok != bitmap->GetHICON(&hIcon))
+	{
+		printf("get icon fail\n");
+		return;
+	}
+
+// 	HBITMAP hbmp=NULL;
+// 	if(Gdiplus::Ok != bitmap->GetHBITMAP(Gdiplus::Color.Transparent, &hbmp))
+// 	{
+// 		printf("get bmp fail\n");
+// 		return -1;
+// 	}
+// 
+// 	hbmp = (HBITMAP)CopyImage(hbmp, IMAGE_BITMAP, 128, 128, LR_COPYDELETEORG | LR_COPYRETURNORG);
+// 	if(!hbmp)
+// 	{
+// 		printf("copy bmp fail\n");
+// 		return -1;
+// 	}
+
+	hIcon = (HICON)CopyImage(hIcon, IMAGE_ICON, 512, 512, LR_COPYRETURNORG | LR_COPYDELETEORG);
+	if(!hIcon)
+	{
+		printf("copy icon fail\n");
+		return;
+	}
+
+	DrawIcon(hIcon);
 }
 
-bool IStream2File( IStream* stream, LPCTSTR path )
+GDIPlusInitialize::GDIPlusInitialize(void)
+: gdiplusToken_(0)
 {
-	HANDLE hFile;
-	if(NULL == stream || NULL == path || 0 == *path 
-		|| INVALID_HANDLE_VALUE == (hFile = CreateFile(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)))
-	{
-		ATLASSERT(FALSE);
-		return false;
-	}
-
-	ULARGE_INTEGER seek_pos = {0};
-	stream->Seek((LARGE_INTEGER&)seek_pos, STREAM_SEEK_SET, &seek_pos);
-
-	const ULONG buf_size = 1024;
-	BYTE		buf[buf_size];
-	ULONG		read_bytes = 0;
-	while(S_OK == stream->Read(buf, buf_size, &read_bytes) && read_bytes > 0)
-	{
-		DWORD bytes_written;
-		if(!WriteFile(hFile, buf, read_bytes, &bytes_written, NULL))
-			break;
-	}
-
-	CloseHandle(hFile);
-	return true;
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&gdiplusToken_, &gdiplusStartupInput, NULL);
 }
 
-bool IPicture2IStream( IPicture* pic, IStream** stream, LONG* size)
+GDIPlusInitialize::~GDIPlusInitialize(void)
 {
-	if(NULL == pic || NULL == stream)
-	{
-		ATLASSERT(FALSE);
-		return false;
-	}
+	if(0 != gdiplusToken_)
+		Gdiplus::GdiplusShutdown(gdiplusToken_);
 
-	CreateStreamOnHGlobal(NULL, TRUE, stream);
-	HRESULT hr = pic->SaveAsFile(*stream,TRUE, size);
-	return S_OK == hr;
 }
