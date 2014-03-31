@@ -6,6 +6,7 @@
 #include "IconSize.h"
 #include "IconSizeDlg.h"
 #include <Strsafe.h>
+#include "ImageUtil.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -57,6 +58,7 @@ BEGIN_MESSAGE_MAP(CIconSizeDlg, CDialog)
 	ON_BN_CLICKED(IDC_IEXTRACTIMAGE, &CIconSizeDlg::OnBnClickedIextractimage)
 	ON_BN_CLICKED(IDC_SHGET, &CIconSizeDlg::OnBnClickedShget)
 	ON_BN_CLICKED(IDC_SHDEFEXTRACT, &CIconSizeDlg::OnBnClickedShdefextract)
+	ON_BN_CLICKED(IDC_EXTCOPY, &CIconSizeDlg::OnBnClickedExtcopy)
 END_MESSAGE_MAP()
 
 
@@ -138,6 +140,20 @@ void CIconSizeDlg::DrawIcon( HICON hIcon )
 	HWND hWndStatic = ::GetDlgItem(m_hWnd, m_DrawTargetID++);
 	SetStaticImageType(hWndStatic, SS_ICON);
 	::SendMessage(hWndStatic, STM_SETICON, (WPARAM) hIcon, NULL);
+
+	TCHAR path[1024];
+	GetModuleFileName(NULL, path, ARRAYSIZE(path));
+	StringCbCopy(PathFindFileName(path), ARRAYSIZE(path), TEXT("save.bmp"));
+
+	ImageUtil::SaveIconAsPng(hIcon, path);
+
+// 	ATL::CComPtr<IPicture> pic;
+// 	PICTDESC picdesc;
+// 	picdesc.cbSizeofstruct = sizeof(PICTDESC);
+// 	picdesc.picType = PICTYPE_ICON;       
+// 	picdesc.icon.hicon = hIcon;
+// 	HRESULT hr = OleCreatePictureIndirect(&picdesc, IID_IPicture, TRUE,(VOID**)&pic);
+// 	IPicture2File(pic, path);
 }
 
 void CIconSizeDlg::DrawIcon( HBITMAP hBmp )
@@ -191,6 +207,36 @@ void CIconSizeDlg::OnBnClickedExtract()
 		HICON hIcon = ExtractIcon(AfxGetInstanceHandle(), m_FilePath, m_IconIdx);
 		if(hIcon)
 			DrawIcon(hIcon);
+		else
+			m_MsgError.SetWindowText(TEXT("ExtractIcon fail"));
+	}
+	else
+		m_MsgError.SetWindowText(TEXT("Please set file path"));
+}
+
+void CIconSizeDlg::OnBnClickedExtcopy()
+{
+	UpdateData(TRUE);
+
+	ResetDraw();
+
+	if(!m_FilePath.IsEmpty())
+	{
+		HICON hIcon = ExtractIcon(AfxGetInstanceHandle(), m_FilePath, m_IconIdx);
+		if(hIcon)
+		{
+			if(m_IconSize != 0)
+			{
+				HICON hIconNew = (HICON)CopyImage(hIcon, IMAGE_ICON, m_IconSize, m_IconSize, LR_COPYRETURNORG);
+				if(hIcon != hIconNew)
+				{
+					DestroyIcon(hIcon);
+					hIcon = hIconNew;
+				}
+			}
+
+			DrawIcon(hIcon);
+		}
 		else
 			m_MsgError.SetWindowText(TEXT("ExtractIcon fail"));
 	}
@@ -466,4 +512,56 @@ void CIconSizeDlg::OnBnClickedShdefextract()
 	{
 		m_MsgError.SetWindowText(TEXT("Please set file path"));
 	}
+}
+
+bool IPicture2File( IPicture* pic, LPCTSTR path )
+{
+	IStream*	stream = NULL;
+	bool		result = false;
+	if(IPicture2IStream(pic, &stream, NULL))
+	{
+		result = IStream2File(stream, path);
+		stream->Release();
+	}
+	return result;
+}
+
+bool IStream2File( IStream* stream, LPCTSTR path )
+{
+	HANDLE hFile;
+	if(NULL == stream || NULL == path || 0 == *path 
+		|| INVALID_HANDLE_VALUE == (hFile = CreateFile(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)))
+	{
+		ATLASSERT(FALSE);
+		return false;
+	}
+
+	ULARGE_INTEGER seek_pos = {0};
+	stream->Seek((LARGE_INTEGER&)seek_pos, STREAM_SEEK_SET, &seek_pos);
+
+	const ULONG buf_size = 1024;
+	BYTE		buf[buf_size];
+	ULONG		read_bytes = 0;
+	while(S_OK == stream->Read(buf, buf_size, &read_bytes) && read_bytes > 0)
+	{
+		DWORD bytes_written;
+		if(!WriteFile(hFile, buf, read_bytes, &bytes_written, NULL))
+			break;
+	}
+
+	CloseHandle(hFile);
+	return true;
+}
+
+bool IPicture2IStream( IPicture* pic, IStream** stream, LONG* size)
+{
+	if(NULL == pic || NULL == stream)
+	{
+		ATLASSERT(FALSE);
+		return false;
+	}
+
+	CreateStreamOnHGlobal(NULL, TRUE, stream);
+	HRESULT hr = pic->SaveAsFile(*stream,TRUE, size);
+	return S_OK == hr;
 }
