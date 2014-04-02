@@ -124,7 +124,7 @@ static UINT WriteIconImageHeader(HANDLE hFile, BITMAP *pbmpColor, BITMAP *pbmpMa
 	// write the RGBQUAD color table (for 16 and 256 colour icons)
 	if(pbmpColor->bmBitsPixel == 2 || pbmpColor->bmBitsPixel == 8)
 	{
-
+		ATLASSERT(FALSE);
 	}
 
 	return nWritten;

@@ -289,6 +289,7 @@ void CIconSizeDlg::OnBnClickedLoadimage()
 	
 	if (m_FilePath.IsEmpty())
 	{
+		m_MsgError.SetWindowText(TEXT("invalid path"));
 		return;
 	}
 
@@ -302,7 +303,7 @@ void CIconSizeDlg::OnBnClickedLoadimage()
 			return;
 		}
 	}
-	else if(_tcsicmp(file_ext, TEXT(".bmp")))
+	else if(0 == _tcsicmp(file_ext, TEXT(".bmp")))
 	{
 		image_type = IMAGE_BITMAP;
 	}
@@ -401,7 +402,7 @@ void CIconSizeDlg::OnBnClickedIextractimage()
 	HRESULT hr = SHBindToParent(pidl, IID_IShellFolder, (VOID**)&shell_parent, &pidl_child);
 	if(FAILED(hr))
 	{
-		m_MsgError.SetWindowText(TEXT("can not get item folder info"));
+		m_MsgError.SetWindowText(TEXT("can not get shell folder"));
 		return;
 	}
 
@@ -410,7 +411,7 @@ void CIconSizeDlg::OnBnClickedIextractimage()
 	hr = shell_parent->GetUIObjectOf(NULL, 1, &pidl_child, IID_IExtractImage, NULL, (VOID**)&image_extracter);
 	if(FAILED(hr))
 	{
-		m_MsgError.SetWindowText(TEXT("can not get item image object"));
+		m_MsgError.SetWindowText(TEXT("can not get IExtractImage object"));
 		return;
 	}
 
