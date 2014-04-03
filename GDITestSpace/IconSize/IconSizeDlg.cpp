@@ -149,7 +149,7 @@ void CIconSizeDlg::DrawIcon( HICON hIcon )
 	//SetStaticImageType(hWndStatic, SS_ICON);
 	::SendMessage(hWndStatic, STM_SETICON, (WPARAM) hIcon, NULL);
 
-	SaveIcon3(TEXT("D:\\test.ico"), &hIcon, 1);
+	//SaveIcon3(TEXT("D:\\test.ico"), &hIcon, 1);
 }
 
 HBITMAP CreateVritualIconMask(HBITMAP bmColor)
