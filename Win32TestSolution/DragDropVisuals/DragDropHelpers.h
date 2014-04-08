@@ -10,7 +10,32 @@
 #include <strsafe.h>
 #include <commoncontrols.h>
 
+HRESULT	DataObj_CopyHIDA(IDataObject *pdtobj, CIDA **ppida);
+
 // declare a static CLIPFORMAT and pass that that by ref as the first param
+
+
+// accessor helpers for the HIDA (aka CFSTR_SHELLIDLIST) clipboard format
+
+// get the "folder" part of the IDList, this is the IDList that the children
+// are rooted from
+__inline PCUIDLIST_ABSOLUTE IDA_GetFolderIDList(CIDA const *pida)
+{
+	return (PCUIDLIST_ABSOLUTE)(((char *)pida) + pida->aoffset[0]);
+}
+
+// get the "child" item part of the IDList, these can be either child items or
+// relative, hence PCUIDLIST_RELATIVE return type
+__inline PCUIDLIST_RELATIVE IDA_GetItemIDList(CIDA const *pida, int i)
+{
+	return (PCUIDLIST_RELATIVE)(((char *)pida) + pida->aoffset[i + 1]);
+}
+
+// a CIDA structure represents a set of shell items, create the Nth item
+// from that set in the form of an IShellItem
+//
+// this uses XP SP1 APIs so it works downlevel
+
 
 __inline CLIPFORMAT GetClipboardFormat(CLIPFORMAT *pcf, PCWSTR pszForamt)
 {
@@ -71,8 +96,28 @@ HRESULT CreateItemFromObject(IUnknown *punk, REFIID riid, void **ppv)
 {
     *ppv = NULL;
 
-    PIDLIST_ABSOLUTE pidl;
+    PIDLIST_ABSOLUTE pidl = NULL;
+
+#if CODE_WIN7
     HRESULT hr = SHGetIDListFromObject(punk, &pidl);
+#else
+	CIDA* pida = NULL;
+	IDataObject* data_obj;
+	HRESULT hr = punk->QueryInterface(IID_IDataObject, (VOID**)&data_obj);
+	hr = DataObj_CopyHIDA(data_obj, &pida);
+
+	if(SUCCEEDED(hr))
+	{
+		PIDLIST_ABSOLUTE pidlFolder; // needed for alignment
+		hr = SHILCloneFull(IDA_GetFolderIDList(pida), &pidlFolder);
+
+		if(SUCCEEDED(hr))
+		{			
+			hr = SHILCombine(pidlFolder, IDA_GetItemIDList(pida, 0), &pidl);
+		}
+	}
+#endif
+
     if (SUCCEEDED(hr))
     {
         hr = SHCreateItemFromIDList(pidl, riid, ppv);
@@ -269,3 +314,26 @@ private:
     HWND _hwndRegistered;
     HRESULT _hrOleInit;
 };
+
+HRESULT	DataObj_CopyHIDA(IDataObject *pdtobj, CIDA **ppida)
+{
+	*ppida = NULL;
+	CLIPFORMAT format_idlist;
+
+	FORMATETC fmte = {GetClipboardFormat(&format_idlist, CFSTR_SHELLIDLIST), NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
+	STGMEDIUM medium;
+	HRESULT hr = pdtobj->GetData(&fmte, &medium);
+	if (SUCCEEDED(hr))
+	{
+		void const *pSrc = GlobalLock(medium.hGlobal);
+		size_t const cbSize = GlobalSize(medium.hGlobal);
+		*ppida = (CIDA *)GlobalAlloc(GPTR, cbSize);
+		hr = *ppida ? S_OK : E_OUTOFMEMORY;
+		if (SUCCEEDED(hr))
+		{
+			memcpy(*ppida, pSrc, cbSize);
+		}
+		ReleaseStgMedium(&medium);
+	}
+	return hr;
+}

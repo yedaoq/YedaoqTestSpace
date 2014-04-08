@@ -96,7 +96,16 @@ private:
     {
         // the shell data object imptlements ::SetData() in a way that will store any format
         // this code delegates to that implementation to avoid having to implement ::SetData()
-        return _pdtobjShell ? S_OK : SHCreateDataObject(NULL, 0, NULL, NULL, IID_PPV_ARGS(&_pdtobjShell));
+        
+#if CODE_WIN7
+		return _pdtobjShell ? S_OK : SHCreateDataObject(NULL, 0, NULL, NULL, IID_PPV_ARGS(&_pdtobjShell));
+#else
+		if (!_pdtobjShell)
+		{
+			return CIDLData_CreateFromIDArray(NULL, 0, NULL, &_pdtobjShell);
+		}
+		return S_OK;
+#endif
     }
 
     long _cRef;

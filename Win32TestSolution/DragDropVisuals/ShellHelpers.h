@@ -10,6 +10,8 @@
 #define STRICT_TYPED_ITEMIDS    // in case you do IDList stuff you want this on for better type saftey
 #define UNICODE 1
 
+#define CODE_WIN7 0
+
 #include <windows.h>
 #include <windowsx.h>           // for WM_COMMAND handling macros
 #include <shlobj.h>             // shell stuff
