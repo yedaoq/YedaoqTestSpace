@@ -39,11 +39,12 @@ __inline PCUIDLIST_RELATIVE IDA_GetItemIDList(CIDA const *pida, int i)
 
 __inline CLIPFORMAT GetClipboardFormat(CLIPFORMAT *pcf, PCWSTR pszForamt)
 {
+	CLIPFORMAT ret = (CLIPFORMAT)RegisterClipboardFormat(pszForamt);
     if (*pcf == 0)
     {
-        *pcf = (CLIPFORMAT)RegisterClipboardFormat(pszForamt);
+        *pcf = ret;
     }
-    return *pcf;
+    return ret;
 }
 
 __inline HRESULT SetBlob(IDataObject *pdtobj, CLIPFORMAT cf, const void *pvBlob, UINT cbBlob)
@@ -120,9 +121,16 @@ HRESULT CreateItemFromObject(IUnknown *punk, REFIID riid, void **ppv)
 
     if (SUCCEEDED(hr))
     {
+#if CODE_WIN7
         hr = SHCreateItemFromIDList(pidl, riid, ppv);
-        ILFree(pidl);
+#else
+		hr = SHCreateShellItem(NULL, NULL, (PCUITEMID_CHILD)pidl, (IShellItem**)ppv);
+#endif
+		
+		ILFree(pidl);
     }
+
+#if CODE_WIN7
     else
     {
         // perhaps the input is from IE and if so we can construct an item from the URL
@@ -150,6 +158,8 @@ HRESULT CreateItemFromObject(IUnknown *punk, REFIID riid, void **ppv)
             pdo->Release();
         }
     }
+#endif
+
     return hr;
 }
 
@@ -284,6 +294,8 @@ public:
             _pdth->Drop(pdtobj, &ptT, *pdwEffect);
         }
 
+#if CODE_WIN7
+
         IShellItemArray *psia;
         HRESULT hr = SHCreateShellItemArrayFromDataObject(_pdtobj, IID_PPV_ARGS(&psia));
         if (SUCCEEDED(hr))
@@ -295,6 +307,13 @@ public:
         {
             OnDropError(_pdtobj);
         }
+
+#else
+
+		CreateItemFromObject(pdtobj, IID_PPV_ARGS(&_pshellitem));
+		OnDrop(NULL, grfKeyState);
+
+#endif
 
         return S_OK;
     }
@@ -313,14 +332,17 @@ private:
     PCWSTR _pszDropTipTemplate;
     HWND _hwndRegistered;
     HRESULT _hrOleInit;
+
+protected:
+	IShellItem2*	_pshellitem;
 };
 
 HRESULT	DataObj_CopyHIDA(IDataObject *pdtobj, CIDA **ppida)
 {
 	*ppida = NULL;
-	CLIPFORMAT format_idlist;
+	static CLIPFORMAT format_idlist = RegisterClipboardFormat(CFSTR_SHELLIDLIST);
 
-	FORMATETC fmte = {GetClipboardFormat(&format_idlist, CFSTR_SHELLIDLIST), NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
+	FORMATETC fmte = {format_idlist, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
 	STGMEDIUM medium;
 	HRESULT hr = pdtobj->GetData(&fmte, &medium);
 	if (SUCCEEDED(hr))

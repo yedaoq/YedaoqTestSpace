@@ -45,9 +45,16 @@ __inline HRESULT ResultFromWin32Bool(BOOL b)
 __inline HRESULT ShellExecuteItem(HWND hwnd, PCWSTR pszVerb, IShellItem *psi)
 {
     // how to activate a shell item, use ShellExecute().
-    PIDLIST_ABSOLUTE pidl;
+    PIDLIST_ABSOLUTE pidl = NULL;
+
+#if CODE_WIN7
     HRESULT hr = SHGetIDListFromObject(psi, &pidl);
-    if (SUCCEEDED(hr))
+#else
+	HRESULT hr = S_OK;
+	
+#endif
+
+	if (SUCCEEDED(hr))
     {
         SHELLEXECUTEINFO ei = { sizeof(ei) };
         ei.fMask = SEE_MASK_INVOKEIDLIST;

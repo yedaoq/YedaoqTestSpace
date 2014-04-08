@@ -124,8 +124,11 @@ private:
 
     virtual HRESULT OnDrop(IShellItemArray *psia, DWORD /* grfKeyState */)
     {
-        HRESULT hr = _CopyShellItemArray(psia, &_psiaDrop);
-        if (SUCCEEDED(hr))
+		HRESULT hr = S_OK;
+#if CODE_WIN7
+        hr = _CopyShellItemArray(psia, &_psiaDrop);
+#endif
+		if (SUCCEEDED(hr))
         {
             _BindUI();
         }
@@ -140,7 +143,7 @@ private:
 void CDragDropVisualsApp::_OnInitDlg()
 {
     InitializeDragDropHelper(_hdlg, DROPIMAGE_COPY, L"Drop Visuals Sample App");
-    _BindUI();
+    //_BindUI();
 }
 
 void CDragDropVisualsApp::_OnDestroyDlg()
@@ -164,8 +167,15 @@ void CDragDropVisualsApp::_OnOpen()
 
 void CDragDropVisualsApp::_BindUI()
 {
+	HRESULT hr = S_OK;
     IShellItem2 *psi;
-    HRESULT hr = _GetFirstItem(IID_PPV_ARGS(&psi));
+
+#if  CODE_WIN7
+	HRESULT hr = _GetFirstItem(IID_PPV_ARGS(&psi));
+#else
+	psi = _pshellitem;
+#endif
+    
     if (SUCCEEDED(hr))
     {
         SetDlgItemText(_hdlg, IDC_STATIC, L"Start Drag Drop by clicking on icon");
