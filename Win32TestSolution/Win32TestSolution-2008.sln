@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DragDropVisuals", "DragDrop
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowExiter", "WindowExiter\WindowExiter.vcproj", "{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ControlPanelItems", "ControlPanelItems\ControlPanelItems.vcproj", "{6E41ED11-EC9C-4A81-9675-07E25FB3D599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -27,6 +29,12 @@ Global
 		{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}.Release|Win32.ActiveCfg = Release|Win32
 		{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}.Release|Win32.Build.0 = Release|Win32
 		{30E118EA-5D93-4552-9E4D-3AAAC3D281DB}.Release|x64.ActiveCfg = Release|Win32
+		{6E41ED11-EC9C-4A81-9675-07E25FB3D599}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6E41ED11-EC9C-4A81-9675-07E25FB3D599}.Debug|Win32.Build.0 = Debug|Win32
+		{6E41ED11-EC9C-4A81-9675-07E25FB3D599}.Debug|x64.ActiveCfg = Debug|Win32
+		{6E41ED11-EC9C-4A81-9675-07E25FB3D599}.Release|Win32.ActiveCfg = Release|Win32
+		{6E41ED11-EC9C-4A81-9675-07E25FB3D599}.Release|Win32.Build.0 = Release|Win32
+		{6E41ED11-EC9C-4A81-9675-07E25FB3D599}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
