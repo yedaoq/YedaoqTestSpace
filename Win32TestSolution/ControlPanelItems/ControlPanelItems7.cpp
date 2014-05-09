@@ -22,7 +22,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	//LPTSTR path = TEXT("::{26EE0668-A00A-44D7-9371-BEB064C98683}\5\::{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}");
 	//LPTSTR path = TEXT("::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}");
 	//LPTSTR path = TEXT("::{26EE0668-A00A-44D7-9371-BEB064C98683}");
-	LPTSTR path = TEXT("::{26EE0668-A00A-44D7-9371-BEB064C98683}\\5");
+	//LPTSTR path = TEXT("::{26EE0668-A00A-44D7-9371-BEB064C98683}\\5");
+	LPTSTR path = TEXT("::{26EE0668-A00A-44D7-9371-BEB064C98683}\\0");
 
 	PIDLIST_ABSOLUTE	pidl_cpl;
 	hr = folder_desktop->ParseDisplayName(NULL, NULL, path, NULL, &pidl_cpl, NULL);	
@@ -36,10 +37,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	hr = folder_desktop->BindToObject(pidl_cpl, NULL, IID_IShellFolder, (VOID**)&folder_cpl);
 
 	ATL::CComPtr<IEnumIDList>  enum_cpl;
-	hr = folder_cpl->EnumObjects(NULL, SHCONTF_FOLDERS | SHCONTF_NONFOLDERS, &enum_cpl);
+	hr = folder_cpl->EnumObjects(NULL, SHCONTF_FOLDERS | SHCONTF_NONFOLDERS | SHCONTF_INCLUDEHIDDEN | SHCONTF_NETPRINTERSRCH | SHCONTF_SHAREABLE | SHCONTF_STORAGE| SHCONTF_FASTITEMS | SHCONTF_FLATLIST, &enum_cpl);
 
 	PITEMID_CHILD	item_pidl;
-	while(SUCCEEDED(enum_cpl->Next(1, &item_pidl, NULL)) && item_pidl)
+	while(SUCCEEDED(hr = enum_cpl->Next(1, &item_pidl, NULL)) && item_pidl)
 	{
 		if(item_pidl)
 		{
@@ -84,6 +85,7 @@ void PrintDisplayName( IShellFolder* folder_parse, IShellItem* shell_item, int s
 			_tprintf(TEXT("Parse:%s"), ParseDisplayName(folder_parse, display_name)? TEXT("able") : TEXT("unable"));
 		}
 		printf("\n");
+		CoTaskMemFree(display_name);
 	}
 }
 
