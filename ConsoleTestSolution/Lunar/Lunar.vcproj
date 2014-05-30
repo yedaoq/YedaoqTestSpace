@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="SHAppBarMessage"
-	ProjectGUID="{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}"
-	RootNamespace="SHAppBarMessage"
+	Name="Lunar"
+	ProjectGUID="{4A85803A-F586-465D-8203-1DD5F656DB35}"
+	RootNamespace="Lunar"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -166,7 +166,15 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\SHAppBarMsg.cpp"
+			RelativePath=".\LunarCore.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\LunarCore.h"
+			>
+		</File>
+		<File
+			RelativePath=".\main.cpp"
 			>
 		</File>
 	</Files>

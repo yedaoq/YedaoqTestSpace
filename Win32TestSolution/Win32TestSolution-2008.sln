@@ -17,7 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AccGetValue", "AccGetValue\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestEnvironment", "TestEnvironment\TestEnvironment.vcproj", "{AE2F8313-74FD-4056-B0E5-D10F405BC020}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SHAppBarMessage", "SHAppBarMessage\SHAppBarMessage.vcproj", "{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomPanel", "CustomPanel\CustomPanel.vcproj", "{D0453C99-AB63-4C02-AC33-B4D6B7AD6AE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,12 +77,12 @@ Global
 		{AE2F8313-74FD-4056-B0E5-D10F405BC020}.Release|Win32.ActiveCfg = Release|Win32
 		{AE2F8313-74FD-4056-B0E5-D10F405BC020}.Release|Win32.Build.0 = Release|Win32
 		{AE2F8313-74FD-4056-B0E5-D10F405BC020}.Release|x64.ActiveCfg = Release|Win32
-		{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}.Debug|Win32.ActiveCfg = Debug|Win32
-		{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}.Debug|Win32.Build.0 = Debug|Win32
-		{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}.Debug|x64.ActiveCfg = Debug|Win32
-		{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}.Release|Win32.ActiveCfg = Release|Win32
-		{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}.Release|Win32.Build.0 = Release|Win32
-		{10F70DB1-28DC-4950-A9D6-5F526B2C9DAA}.Release|x64.ActiveCfg = Release|Win32
+		{D0453C99-AB63-4C02-AC33-B4D6B7AD6AE3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D0453C99-AB63-4C02-AC33-B4D6B7AD6AE3}.Debug|Win32.Build.0 = Debug|Win32
+		{D0453C99-AB63-4C02-AC33-B4D6B7AD6AE3}.Debug|x64.ActiveCfg = Debug|Win32
+		{D0453C99-AB63-4C02-AC33-B4D6B7AD6AE3}.Release|Win32.ActiveCfg = Release|Win32
+		{D0453C99-AB63-4C02-AC33-B4D6B7AD6AE3}.Release|Win32.Build.0 = Release|Win32
+		{D0453C99-AB63-4C02-AC33-B4D6B7AD6AE3}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

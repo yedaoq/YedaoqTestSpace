@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CRuntime", "CRuntime\CRuntime.vcproj", "{18EA2EA3-1C2C-4179-A977-623D7C11CAD1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lunar", "Lunar\Lunar.vcproj", "{4A85803A-F586-465D-8203-1DD5F656DB35}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{18EA2EA3-1C2C-4179-A977-623D7C11CAD1}.Debug|Win32.Build.0 = Debug|Win32
 		{18EA2EA3-1C2C-4179-A977-623D7C11CAD1}.Release|Win32.ActiveCfg = Release|Win32
 		{18EA2EA3-1C2C-4179-A977-623D7C11CAD1}.Release|Win32.Build.0 = Release|Win32
+		{4A85803A-F586-465D-8203-1DD5F656DB35}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4A85803A-F586-465D-8203-1DD5F656DB35}.Debug|Win32.Build.0 = Debug|Win32
+		{4A85803A-F586-465D-8203-1DD5F656DB35}.Release|Win32.ActiveCfg = Release|Win32
+		{4A85803A-F586-465D-8203-1DD5F656DB35}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
