@@ -4,11 +4,11 @@ extern WORD gLunarMonthDayCount[];
 extern BYTE gLunarMonthLeap[];
 extern BYTE gLunarFarmDay[];
 
-WORD CCalendarCore::WeekNumOfDate(year_t iYear, month_t iMonth, day_t iDay)
+int CCalendarCore::WeekNumOfDate(year_t iYear, month_t iMonth, day_t iDay)
 {
 	//数组元素monthday[i]表示第i个月以前的总天数除以7的余数
 	WORD monthday[]={0,3,3,6,1,4,6,2,5,0,3,5};
-	day_t iDays = (iYear-1)%7 + (iYear-1)/4 - (iYear-1)/100 +(iYear-1)/400;
+	WORD iDays = (iYear-1)%7 + (iYear-1)/4 - (iYear-1)/100 +(iYear-1)/400;
 	iDays += (monthday[iMonth-1] +iDay) ;
 	//如果iYear是闰年
 	if(IsLeapYear(iYear) && iMonth>2)
@@ -17,7 +17,7 @@ WORD CCalendarCore::WeekNumOfDate(year_t iYear, month_t iMonth, day_t iDay)
 	return iDays%7;
 }
 
-WORD CCalendarCore::WeekCountFromMonthBegin( year_t iYear, month_t iMonth, day_t iDay )
+int CCalendarCore::WeekCountFromMonthBegin( year_t iYear, month_t iMonth, day_t iDay )
 {
 	int iDayFirst=WeekNumOfDate(iYear,iMonth,1);
 	int days1week=7-iDayFirst;
@@ -26,7 +26,7 @@ WORD CCalendarCore::WeekCountFromMonthBegin( year_t iYear, month_t iMonth, day_t
 	return (iDay+7-1)/7;
 }
 
-WORD CCalendarCore::WeekCountInMonth( year_t iYear, month_t iMonth )
+int CCalendarCore::WeekCountInMonth( year_t iYear, month_t iMonth )
 {
 	int iDayFirst=WeekNumOfDate(iYear,iMonth,1);
 	int days=DayCountInMonth(iYear,iMonth);
@@ -88,10 +88,12 @@ long CCalendarCore::DayCountBetween(year_t iEndYear, month_t iEndMonth, day_t iE
 	return iDiffDays;
 }
 
-void  CCalendarCore::l_CalcLunarDate(year_t &iYear, month_t &iMonth ,day_t &iDay, long iSpanDays)
+void  CCalendarCore::l_CalcLunarDate(LunarDate& lunar_date, long iSpanDays)
 {
 	//阳历1901年2月19日为阴历1901年正月初一
 	//阳历1901年1月1日到2月19日共有49天
+	WORD iYear, iMonth, iDay;
+	bool month_is_leap = false;
 	if(iSpanDays <49)
 	{
 		iYear  = LUNAR_START_YEAR-1;
@@ -105,54 +107,57 @@ void  CCalendarCore::l_CalcLunarDate(year_t &iYear, month_t &iMonth ,day_t &iDay
 			iMonth = 12;
 			iDay   = WORD(iSpanDays) -18;
 		}
-		return ;
 	}
-	//下面从阴历1901年正月初一算起
-	iSpanDays -=49;
-	iYear  = LUNAR_START_YEAR;
-	iMonth = 1;
-	iDay   = 1;
-
-	//计算年
-	while(true)
+	else
 	{
-		long tmp = CCalendarCore::DayCountInLunarYear(iYear);
-		if(iSpanDays < tmp)
-			break;
-		iSpanDays -= tmp;
-		++iYear;
-	}
+		//下面从阴历1901年正月初一算起
+		iSpanDays -=49;
+		iYear  = LUNAR_START_YEAR;
+		iMonth = 1;
+		iDay   = 1;
 
-	//计算月
-	while(true)
-	{
-		long tmp = CCalendarCore::DayCountInLunarMonth(iYear, iMonth);
-		long day_in_month_exact = LOWORD(tmp);
-		if (iSpanDays <= day_in_month_exact) break;
-		iSpanDays -= day_in_month_exact;
-
-		if(tmp > day_in_month_exact)	// 闰月
+		//计算年
+		while(true)
 		{
-			day_in_month_exact = HIWORD(tmp);
-			if (iSpanDays <= day_in_month_exact)
-			{
-				//month_is_leap = true;
+			long tmp = CCalendarCore::DayCountInLunarYear(iYear);
+			if(iSpanDays < tmp)
 				break;
-			}
-			iSpanDays -= day_in_month_exact;
+			iSpanDays -= tmp;
+			++iYear;
 		}
 
-		++iMonth;
-	
-	}
+		//计算月
+		while(true)
+		{
+			long tmp = CCalendarCore::DayCountInLunarMonth(iYear, iMonth);
+			long day_in_month_exact = LOWORD(tmp);
+			if (iSpanDays <= day_in_month_exact) break;
+			iSpanDays -= day_in_month_exact;
 
-	//计算日
-	iDay += WORD(iSpanDays);
+			if(tmp > day_in_month_exact)	// 闰月
+			{
+				day_in_month_exact = HIWORD(tmp);
+				if (iSpanDays <= day_in_month_exact)
+				{
+					month_is_leap = true;
+					break;
+				}
+				iSpanDays -= day_in_month_exact;
+			}
+
+			++iMonth;
+
+		}
+
+		//计算日
+		iDay += WORD(iSpanDays);
+	}
+	lunar_date.set(iYear, iMonth, month_is_leap, iDay);
 }
 
-WORD CCalendarCore::DateToLunar(year_t iYear, month_t iMonth, day_t iDay, year_t &iLunarYear, month_t &iLunarMonth, day_t &iLunarDay)
+WORD CCalendarCore::DateToLunar(year_t iYear, month_t iMonth, day_t iDay, LunarDate& lunar_date)
 {
-	l_CalcLunarDate(iLunarYear, iLunarMonth, iLunarDay, DayCountBetween(iYear, iMonth, iDay));
+	l_CalcLunarDate(lunar_date, DayCountBetween(iYear, iMonth, iDay));
 	return 0;
 	//return l_GetLunarHolDay(iYear, iMonth, iDay, strHolidayInfoDesc);
 }
