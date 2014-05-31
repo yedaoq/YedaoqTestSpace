@@ -26,7 +26,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		int Day = (num % 100);
 
 		
-		WORD lYear, lMonth, lDay;
+		WORD lYear, /*lMonth,*/ lDay;
+		CCalendarCore::month_t lMonth;
 		CCalendarCore::DateToLunar(Year, Month, Day, lYear, lMonth, lDay);
 
 		WCHAR buf[128];
