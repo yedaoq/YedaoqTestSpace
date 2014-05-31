@@ -38,7 +38,7 @@ int CCalendarCore::WeekCountInMonth( year_t iYear, month_t iMonth )
 	return nRet;	
 }
 
-WORD CCalendarCore::DayCountInMonth(year_t iYear, month_t iMonth)
+int  CCalendarCore::DayCountInMonth(year_t iYear, month_t iMonth)
 {
 	switch(iMonth)
 	{
@@ -59,7 +59,7 @@ WORD CCalendarCore::DayCountInMonth(year_t iYear, month_t iMonth)
 	return 0;
 }
 
-WORD CCalendarCore::GetLeapMonth(year_t iLunarYear)
+WORD CCalendarCore::GetLunarLeapMonth(year_t iLunarYear)
 {
 	BYTE &flag = gLunarMonthLeap[(iLunarYear - LUNAR_START_YEAR)/2];
 	return  (iLunarYear - LUNAR_START_YEAR)%2 ? flag&0x0f : flag>>4;
@@ -170,13 +170,15 @@ long CCalendarCore::DayCountInLunarMonth(year_t iLunarYear, month_t iLunarMonth)
 	WORD high = 0, low = 29;
 	int iBit = 16 - iLunarMonth;
 
-	if(iLunarMonth > GetLeapMonth(iLunarYear) && GetLeapMonth(iLunarYear))
+	WORD month_leap = GetLunarLeapMonth(iLunarYear);// GetLeapMonth(iLunarYear);
+
+	if(month_leap && iLunarMonth > month_leap)
 		iBit--;																																					
 
 	if(gLunarMonthDayCount[iLunarYear - LUNAR_START_YEAR] & (1<<iBit))
 		low++;
 
-	if(iLunarMonth == GetLeapMonth(iLunarYear))
+	if(iLunarMonth == month_leap)
 		if(gLunarMonthDayCount[iLunarYear - LUNAR_START_YEAR] & (1<< (iBit -1)))
 			high =30;
 		else 

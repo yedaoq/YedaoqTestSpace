@@ -62,7 +62,7 @@ public:
 	static int  WeekCountFromMonthBegin(year_t iYear, month_t iMonth, day_t iDay);
 
 	//返回iYear年iMonth月的天数 1年1月 --- 65535年12月
-	static WORD DayCountInMonth(year_t iYear, month_t iMonth);
+	static int  DayCountInMonth(year_t iYear, month_t iMonth);
 
 	//返回阴历iLunarYer年阴历iLunarMonth月的天数，如果iLunarMonth为闰月，
 	//高字为第二个iLunarMonth月的天数，否则高字为0 
@@ -73,7 +73,7 @@ public:
 	static WORD DayCountInLunarYear(year_t iLunarYear);
 
 	//返回阴历iLunarYear年的闰月月份，如没有返回0 // 1901年1月---2050年12月
-	static WORD GetLeapMonth(year_t iLunarYear);
+	static WORD GetLunarLeapMonth(year_t iLunarYear);
 
 	// 获取农历年的生肖/干支纪元
 	static WCHAR GetLunarYearAnimal(year_t iLunarYear);
