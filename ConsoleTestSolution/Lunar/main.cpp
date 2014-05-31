@@ -25,11 +25,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		int Month = (num % 10000) / 100;
 		int Day = (num % 100);
 
-		
-		WORD lYear; /*lMonth,*/ //lDay;
-		CCalendarCore::month_t lMonth;
-		CCalendarCore::day_t	lDay;
-
 		CCalendarCore::LunarDate lunar_date;
 		CCalendarCore::DateToLunar(Year, Month, Day, lunar_date);
 
@@ -41,6 +36,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		StringCbPrintf(buf, sizeof(buf), TEXT("%c%cÄê %c%cÔÂ %c%c"), CCalendarCore::GetLunarYearEraGan(lunar_date.year()), CCalendarCore::GetLunarYearEraZhi(lunar_date.year()), HIWORD(zhMonth), LOWORD(zhMonth), HIWORD(zhDay), LOWORD(zhDay));
 
 		std::wcout << buf << std::endl;
+
+		if(CCalendarCore::GetLunarFeast(lunar_date, buf, ARRAYSIZE(buf)))
+			std::wcout << buf << std::endl;
 	}
 
 	getchar();

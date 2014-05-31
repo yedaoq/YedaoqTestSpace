@@ -73,7 +73,7 @@ public:
 	static WORD DayCountInLunarYear(year_t iLunarYear);
 
 	//返回阴历iLunarYear年的闰月月份，如没有返回0 // 1901年1月---2050年12月
-	static WORD GetLunarLeapMonth(year_t iLunarYear);
+	static month_t GetLunarLeapMonth(year_t iLunarYear);
 
 	// 获取农历年的生肖/干支纪元
 	static WCHAR GetLunarYearAnimal(year_t iLunarYear);
@@ -91,6 +91,8 @@ public:
 
 	//计算公历iYear年iMonth月iDay日对应的阴历日期 //1901年1月1日---2050年12月31日
 	static WORD DateToLunar(year_t iYear, month_t iMonth, day_t iDay, LunarDate& lunar_date);
+
+	static bool GetLunarFeast(const LunarDate& date, LPTSTR buf, int buf_size);
 
 protected:
 	//计算从1901年1月1日过iSpanDays天后的阴历日期
