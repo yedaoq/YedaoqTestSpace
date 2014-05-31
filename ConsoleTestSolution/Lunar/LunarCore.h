@@ -34,7 +34,7 @@ public:
 	//返回阴历iLunarYer年阴历iLunarMonth月的天数，如果iLunarMonth为闰月，
 	//高字为第二个iLunarMonth月的天数，否则高字为0 
 	// 1901年1月---2050年12月
-	static LONG DayCountInLunarMonth(year_t iLunarYear, month_t iLunarMonth);
+	static long DayCountInLunarMonth(year_t iLunarYear, month_t iLunarMonth);
 
 	//返回阴历iLunarYear年的总天数  // 1901年1月---2050年12月
 	static WORD DayCountInLunarYear(year_t iLunarYear);
@@ -48,20 +48,20 @@ public:
  	static WCHAR GetLunarYearEraZhi(year_t iLunarYear);
 
 	//把iMonth格式化成中文字符串
-	static DWORD GetMonthNameZh(month_t iMonth, BOOL bLunar);
+	static DWORD GetMonthNameZh(month_t iMonth, bool bLunar);
 
 	//把iDay格式化成中文字符串
 	static DWORD GetDayNameZh(day_t iDay);
 
 	//计算公历两个日期间相差的天数  1年1月1日 --- 65535年12月31日
-	static LONG DayCountBetween(year_t iEndYear, month_t iEndMonth, day_t iEndDay, year_t iStartYear = LUNAR_START_YEAR, month_t iStartMonth =1, day_t iStartDay =1);
+	static long DayCountBetween(year_t iEndYear, month_t iEndMonth, day_t iEndDay, year_t iStartYear = LUNAR_START_YEAR, month_t iStartMonth =1, day_t iStartDay =1);
 
 	//计算公历iYear年iMonth月iDay日对应的阴历日期 //1901年1月1日---2050年12月31日
 	static WORD DateToLunar(year_t iYear, month_t iMonth, day_t iDay, year_t &iLunarYear, month_t &iLunarMonth, day_t &iLunarDay);
 
 protected:
 	//计算从1901年1月1日过iSpanDays天后的阴历日期
-	static void   l_CalcLunarDate(year_t &iYear, month_t &iMonth ,day_t &iDay, LONG iSpanDays);
+	static void   l_CalcLunarDate(year_t &iYear, month_t &iMonth ,day_t &iDay, long iSpanDays);
 	
 	//计算公历iYear年iMonth月iDay日对应的节气 0-24，0表不是节气
 	//static WORD   l_GetLunarHolDay(year_t iYear, month_t iMonth, day_t iDay, std::string& strHolidayInfoDesc);
