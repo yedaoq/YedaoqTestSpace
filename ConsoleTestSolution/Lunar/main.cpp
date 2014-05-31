@@ -25,14 +25,16 @@ int _tmain(int argc, _TCHAR* argv[])
 		int Month = (num % 10000) / 100;
 		int Day = (num % 100);
 
-		CCalendarCore::LunarDate date;
-		CCalendarCore::DateToLunar(Year, Month, Day, date);
+		
+		WORD lYear, lMonth, lDay;
+		CCalendarCore::DateToLunar(Year, Month, Day, lYear, lMonth, lDay);
 
 		WCHAR buf[128];
-		DWORD zhMonth = CCalendarCore::GetMonthNameZh(date.month(), TRUE);
-		DWORD zhDay = CCalendarCore::GetDayNameZh(date.day());
+		//DWORD zhYear = CCalendarCore::GetLunarYearChineseEra(lYear);
+		DWORD zhMonth = CCalendarCore::GetMonthNameZh(lMonth, TRUE);
+		DWORD zhDay = CCalendarCore::GetDayNameZh(lDay);
 		
-		StringCbPrintf(buf, sizeof(buf), TEXT("%c%c年 %c%c月 %c%c"), CCalendarCore::GetLunarYearEraGan(date.year()), CCalendarCore::GetLunarYearEraZhi(date.year()), HIWORD(zhMonth), LOWORD(zhMonth), HIWORD(zhDay), LOWORD(zhDay));
+		StringCbPrintf(buf, sizeof(buf), TEXT("%c%c年 %c%c月 %c%c"), CCalendarCore::GetLunarYearEraGan(lYear), CCalendarCore::GetLunarYearEraZhi(lYear), HIWORD(zhMonth), LOWORD(zhMonth), HIWORD(zhDay), LOWORD(zhDay));
 
 		std::wcout << buf << std::endl;
 	}

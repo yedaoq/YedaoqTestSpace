@@ -4,11 +4,11 @@ extern WORD gLunarMonthDayCount[];
 extern BYTE gLunarMonthLeap[];
 extern BYTE gLunarFarmDay[];
 
-int CCalendarCore::WeekNumOfDate(year_t iYear, month_t iMonth, day_t iDay)
+WORD CCalendarCore::WeekNumOfDate(WORD iYear, WORD iMonth, WORD iDay)
 {
 	//数组元素monthday[i]表示第i个月以前的总天数除以7的余数
-	int monthday[]={0,3,3,6,1,4,6,2,5,0,3,5};
-	int iDays = (iYear-1)%7 + (iYear-1)/4 - (iYear-1)/100 +(iYear-1)/400;
+	WORD monthday[]={0,3,3,6,1,4,6,2,5,0,3,5};
+	WORD iDays = (iYear-1)%7 + (iYear-1)/4 - (iYear-1)/100 +(iYear-1)/400;
 	iDays += (monthday[iMonth-1] +iDay) ;
 	//如果iYear是闰年
 	if(IsLeapYear(iYear) && iMonth>2)
@@ -17,7 +17,7 @@ int CCalendarCore::WeekNumOfDate(year_t iYear, month_t iMonth, day_t iDay)
 	return iDays%7;
 }
 
-int CCalendarCore::WeekCountFromMonthBegin( year_t iYear, month_t iMonth, day_t iDay )
+WORD CCalendarCore::WeekCountFromMonthBegin( WORD iYear, WORD iMonth, WORD iDay )
 {
 	int iDayFirst=WeekNumOfDate(iYear,iMonth,1);
 	int days1week=7-iDayFirst;
@@ -26,7 +26,7 @@ int CCalendarCore::WeekCountFromMonthBegin( year_t iYear, month_t iMonth, day_t 
 	return (iDay+7-1)/7;
 }
 
-int CCalendarCore::WeekCountInMonth( year_t iYear, month_t iMonth )
+WORD CCalendarCore::WeekCountInMonth( WORD iYear, WORD iMonth )
 {
 	int iDayFirst=WeekNumOfDate(iYear,iMonth,1);
 	int days=DayCountInMonth(iYear,iMonth);
@@ -38,7 +38,7 @@ int CCalendarCore::WeekCountInMonth( year_t iYear, month_t iMonth )
 	return nRet;	
 }
 
-int CCalendarCore::DayCountInMonth(year_t iYear, month_t iMonth)
+WORD CCalendarCore::DayCountInMonth(WORD iYear, WORD iMonth)
 {
 	switch(iMonth)
 	{
@@ -59,14 +59,14 @@ int CCalendarCore::DayCountInMonth(year_t iYear, month_t iMonth)
 	return 0;
 }
 
-int CCalendarCore::GetLunarLeapMonth(year_t iLunarYear)
+WORD CCalendarCore::GetLeapMonth(WORD iLunarYear)
 {
 	BYTE &flag = gLunarMonthLeap[(iLunarYear - LUNAR_START_YEAR)/2];
 	return  (iLunarYear - LUNAR_START_YEAR)%2 ? flag&0x0f : flag>>4;
 }
 
-int CCalendarCore::DayCountBetween(year_t iEndYear, month_t iEndMonth, day_t iEndDay,
-								 year_t iStartYear, month_t iStartMonth, day_t iStartDay)
+LONG CCalendarCore::DayCountBetween(WORD iEndYear, WORD iEndMonth, WORD iEndDay,
+								 WORD  iStartYear, WORD iStartMonth, WORD iStartDay)
 {
 	WORD monthday[]={0, 31, 59 ,90, 120, 151, 181, 212, 243, 273, 304, 334}; 
 
@@ -88,15 +88,10 @@ int CCalendarCore::DayCountBetween(year_t iEndYear, month_t iEndMonth, day_t iEn
 	return iDiffDays;
 }
 
-void CCalendarCore::l_CalcLunarDate(LunarDate& lunar_date, int iSpanDays)
+void  CCalendarCore::l_CalcLunarDate(WORD &iYear, WORD &iMonth ,WORD &iDay, LONG iSpanDays)
 {
 	//阳历1901年2月19日为阴历1901年正月初一
 	//阳历1901年1月1日到2月19日共有49天
-	year_t	iYear = LUNAR_START_YEAR;
-	month_t	iMonth = 1;
-	day_t	iDay = 1;
-	bool	month_is_leap = false;
-
 	if(iSpanDays <49)
 	{
 		iYear  = LUNAR_START_YEAR-1;
@@ -110,62 +105,60 @@ void CCalendarCore::l_CalcLunarDate(LunarDate& lunar_date, int iSpanDays)
 			iMonth = 12;
 			iDay   = WORD(iSpanDays) -18;
 		}
+		return ;
 	}
-	else
+	//下面从阴历1901年正月初一算起
+	iSpanDays -=49;
+	iYear  = LUNAR_START_YEAR;
+	iMonth = 1;
+	iDay   = 1;
+
+	//计算年
+	while(true)
 	{
-		//下面从阴历1901年正月初一算起
-		iSpanDays -= 49;
-		iYear  = LUNAR_START_YEAR;
-		iMonth = 1;
-		iDay   = 1;
-
-		//计算年
-		while(true)
-		{
-			LONG tmp = CCalendarCore::DayCountInLunarYear(iYear);
-			if(tmp >= iSpanDays) break;
-			iSpanDays -= tmp;
-			++iYear;
-		}
-
-		//计算月
-		while(true)
-		{
-			LONG tmp = CCalendarCore::DayCountInLunarMonth(iYear, iMonth);
-			LONG day_in_month_exact = LOWORD(tmp);
-			if (iSpanDays <= day_in_month_exact) break;
-			iSpanDays -= day_in_month_exact;
-
-			if(tmp > day_in_month_exact)	// 闰月
-			{
-				day_in_month_exact = HIWORD(tmp);
-				if (iSpanDays <= day_in_month_exact)
-				{
-					month_is_leap = true;
-					break;
-				}
-				iSpanDays -= day_in_month_exact;
-			}
-
-			++iMonth;
-		}
-
-		//计算日
-		iDay += (day_t)iSpanDays;
+		LONG tmp = CCalendarCore::DayCountInLunarYear(iYear);
+		if(iSpanDays < tmp)
+			break;
+		iSpanDays -= tmp;
+		++iYear;
 	}
+
+	//计算月
+	while(true)
+	{
+		LONG tmp = CCalendarCore::DayCountInLunarMonth(iYear, iMonth);
+		LONG day_in_month_exact = LOWORD(tmp);
+		if (iSpanDays <= day_in_month_exact) break;
+		iSpanDays -= day_in_month_exact;
+
+		if(tmp > day_in_month_exact)	// 闰月
+		{
+			day_in_month_exact = HIWORD(tmp);
+			if (iSpanDays <= day_in_month_exact)
+			{
+				//month_is_leap = true;
+				break;
+			}
+			iSpanDays -= day_in_month_exact;
+		}
+
+		++iMonth;
 	
-	lunar_date.set(iYear, iMonth, month_is_leap, iDay);
+	}
+
+	//计算日
+	iDay += WORD(iSpanDays);
 }
 
-bool CCalendarCore::DateToLunar(year_t iYear, month_t iMonth, day_t iDay, LunarDate& lunar_date)
+WORD CCalendarCore::DateToLunar(WORD iYear, WORD iMonth, WORD iDay, WORD &iLunarYear, WORD &iLunarMonth, WORD &iLunarDay)
 {
-	l_CalcLunarDate(lunar_date, DayCountBetween(iYear, iMonth, iDay));
-	return true;
+	l_CalcLunarDate(iLunarYear, iLunarMonth, iLunarDay, DayCountBetween(iYear, iMonth, iDay));
+	return 0;
 	//return l_GetLunarHolDay(iYear, iMonth, iDay, strHolidayInfoDesc);
 }
 
 //根据节气数据存储格式,计算阳历iYear年iMonth月iDay日对应的节气,
-// WORD  CCalendarCore::l_GetLunarHolDay(year_t iYear, month_t iMonth, day_t iDay, std::string& strHolidayInfoDesc)
+// WORD  CCalendarCore::l_GetLunarHolDay(WORD iYear, WORD iMonth, WORD iDay, std::string& strHolidayInfoDesc)
 // {
 // 	BYTE &flag = gLunarHolDay[(iYear - LUNAR_START_YEAR)*12+iMonth -1];
 // 	WORD day;
@@ -209,7 +202,7 @@ bool CCalendarCore::DateToLunar(year_t iYear, month_t iMonth, day_t iDay, LunarD
 // 	return wResult;
 // }
 
-DWORD CCalendarCore::DayCountInLunarMonth(year_t iLunarYear, month_t iLunarMonth)
+LONG CCalendarCore::DayCountInLunarMonth(WORD iLunarYear, WORD iLunarMonth)
 {
 	if(iLunarYear < LUNAR_START_YEAR) 
 		return 0L;
@@ -217,19 +210,13 @@ DWORD CCalendarCore::DayCountInLunarMonth(year_t iLunarYear, month_t iLunarMonth
 	WORD high = 0, low = 29;
 	int iBit = 16 - iLunarMonth;
 
-	// 这段代码不好，原因是因为gLunarMonthDayCount中使用一个bit array来存储月的大小，闰月的大小相关位紧跟在原月后面
-	// 导致要取某一个月的位数据，必须先根据前面有没有闰月来计算一下该位的位置
-	// 更靠谱的做法显然是把闰月的位放在最后面
-
-	WORD iLeapMonth = GetLunarLeapMonth(iLunarYear);
-
-	if(iLunarMonth && iLunarMonth > iLeapMonth)
+	if(iLunarMonth > GetLeapMonth(iLunarYear) && GetLeapMonth(iLunarYear))
 		iBit--;																																					
 
 	if(gLunarMonthDayCount[iLunarYear - LUNAR_START_YEAR] & (1<<iBit))
 		low++;
 
-	if(iLunarMonth == iLeapMonth)
+	if(iLunarMonth == GetLeapMonth(iLunarYear))
 		if(gLunarMonthDayCount[iLunarYear - LUNAR_START_YEAR] & (1<< (iBit -1)))
 			high =30;
 		else 
@@ -238,19 +225,19 @@ DWORD CCalendarCore::DayCountInLunarMonth(year_t iLunarYear, month_t iLunarMonth
 	return MAKELONG(low, high);
 }
 
-int CCalendarCore::DayCountInLunarYear(year_t iLunarYear)
+WORD CCalendarCore::DayCountInLunarYear(WORD iLunarYear)
 {
-	DWORD days =0;
-	for(month_t i=1; i<=12; i++)
+	WORD days =0;
+	for(WORD  i=1; i<=12; i++)
 	{ 
-		DWORD tmp = DayCountInLunarMonth(iLunarYear ,i); 
+		LONG  tmp = DayCountInLunarMonth(iLunarYear ,i); 
 		days += HIWORD(tmp);
 		days += LOWORD(tmp);
 	}
 	return days;
 }
 
-DWORD CCalendarCore::GetMonthNameZh( month_t iMonth, bool bLunar )
+DWORD CCalendarCore::GetMonthNameZh( WORD iMonth, BOOL bLunar )
 {
 	const WCHAR zhChars[] = L"一二三四五六七八九十";
 
@@ -277,24 +264,24 @@ DWORD CCalendarCore::GetMonthNameZh( month_t iMonth, bool bLunar )
 	return MAKELPARAM(b, a);
 }
 
-DWORD CCalendarCore::GetDayNameZh( day_t iDay )
+DWORD CCalendarCore::GetDayNameZh( WORD iDay )
 {
 	WCHAR a = L"初十廿三"[(10 == iDay) ? 0 : (iDay / 10)];
 	WCHAR b = L"十一二三四五六七八九"[iDay % 10];
 	return MAKELPARAM(b,a);
 }
 
-WCHAR CCalendarCore::GetLunarYearAnimal( year_t iLunarYear )
+WCHAR CCalendarCore::GetLunarYearAnimal( WORD iLunarYear )
 {
 	return L"鼠牛虎免龙蛇马羊猴鸡狗猪"[(iLunarYear-4)%12];
 }
 
-WCHAR CCalendarCore::GetLunarYearEraGan( year_t iLunarYear )
+WCHAR CCalendarCore::GetLunarYearEraGan( WORD iLunarYear )
 {
 	return L"甲乙丙丁戊己庚辛壬癸"[(iLunarYear-4)%10];
 }
 
-WCHAR CCalendarCore::GetLunarYearEraZhi( year_t iLunarYear )
+WCHAR CCalendarCore::GetLunarYearEraZhi( WORD iLunarYear )
 {
 	return L"子丑寅卯辰巳午未申酉戌亥"[(iLunarYear-4)%12];
 }
@@ -521,8 +508,7 @@ BYTE gLunarFarmDay[]=
 
 };
 
-LPCTSTR g_LunarFeastDayStr[] = 
-{
+LPCTSTR g_LunarFeastDayStr[] = {
 	_T("0101*春节"),
 	_T("0115 元宵节"),
 	_T("0202 龙抬头节"),
