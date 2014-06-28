@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CRuntime", "CRuntime\CRunti
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lunar", "Lunar\Lunar.vcproj", "{4A85803A-F586-465D-8203-1DD5F656DB35}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "base", "base\base.vcproj", "{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{4A85803A-F586-465D-8203-1DD5F656DB35}.Debug|Win32.Build.0 = Debug|Win32
 		{4A85803A-F586-465D-8203-1DD5F656DB35}.Release|Win32.ActiveCfg = Release|Win32
 		{4A85803A-F586-465D-8203-1DD5F656DB35}.Release|Win32.Build.0 = Release|Win32
+		{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}.Debug|Win32.Build.0 = Debug|Win32
+		{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}.Release|Win32.ActiveCfg = Release|Win32
+		{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

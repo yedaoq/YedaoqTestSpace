@@ -9,6 +9,18 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	setlocale(LC_ALL,"Chinese-simplified");
 
+	APPBARDATA apBar; 
+	memset(&apBar,0,sizeof(apBar)); 
+	apBar.cbSize = sizeof(apBar); 
+	apBar.hWnd = FindWindow("Shell_TrayWnd", NULL);
+	if(apBar.hWnd != NULL) 
+	{ 
+		apBar.lParam = ABS_AUTOHIDE; 
+		SHAppBarMessage(ABM_SETSTATE,&apBar); //设置任务栏自动隐藏
+	}   
+
+	return 0;
+
 	TCHAR buf[128];
 	while(true)
 	{
