@@ -10,6 +10,7 @@
 #include <oleacc.h>
 #include <atlcomcli.h>
 #include <richedit.h>
+#include "ConsoleWindow.h"
 
 extern bool StartAccGetThread();
 extern void AsyncGetValue(HWND hWnd);
@@ -69,7 +70,7 @@ STDMETHODIMP_(ULONG) CTestIconOverlay::Release()
 
 STDMETHODIMP CTestIconOverlay::Initialize( __in_opt PCIDLIST_ABSOLUTE pidlFolder, __in_opt IDataObject *pdtobj, __in_opt HKEY hkeyProgID )
 {
-	//OutputDebugStringA("CTestIconOverlay::Initialize\n");
+	OutputDebugStringA("CTestIconOverlay::Initialize\n");
 	return S_OK;
 }
 
@@ -90,7 +91,8 @@ STDMETHODIMP CTestIconOverlay::GetOverlayInfo( LPWSTR pwszIconFile, int cchMax, 
 {
 	StartAccGetThread();
 	OutputDebugStringA("CTestIconOverlay::GetOverlayInfo\n");
-	timer_id_hook_ = SetTimer(NULL, 0, 2000, TimerProc_Hook);
+	//timer_id_hook_ = SetTimer(NULL, 0, 2000, TimerProc_Hook);
+	StartConsoleWork();
 	return E_FAIL;
 }
 

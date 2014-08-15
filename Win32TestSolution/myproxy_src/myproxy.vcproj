@@ -2,11 +2,11 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="base"
-	ProjectGUID="{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}"
-	RootNamespace="base"
+	Name="myproxy"
+	ProjectGUID="{4A1A158F-83A9-49BE-98FE-9F1951028F43}"
+	RootNamespace="myproxy"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="196613"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -44,9 +44,10 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -60,9 +61,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="WS2_32.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -112,13 +116,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -132,11 +134,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="WS2_32.lib&#x0D;&#x0A;"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -166,28 +171,16 @@
 	</References>
 	<Files>
 		<Filter
-			Name="源文件"
+			Name="Source Files"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\360aaa.cpp"
+				RelativePath=".\ieproxy.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\adjustVM.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\appbar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dynamic_cast.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\isfullscreen.cpp"
+				RelativePath=".\myproxy.cpp"
 				>
 			</File>
 			<File
@@ -210,17 +203,9 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\structsize.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
-			Name="头文件"
+			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
@@ -228,13 +213,9 @@
 				RelativePath=".\stdafx.h"
 				>
 			</File>
-			<File
-				RelativePath=".\targetver.h"
-				>
-			</File>
 		</Filter>
 		<Filter
-			Name="资源文件"
+			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>

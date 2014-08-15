@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="shlwapi.lib"
+				AdditionalDependencies="shlwapi.lib Oleacc.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile="Library.def"
 				GenerateDebugInformation="true"
@@ -337,6 +337,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ConsoleWindow.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dllmain.cpp"
 				>
 				<FileConfiguration
@@ -428,6 +432,10 @@
 			>
 			<File
 				RelativePath=".\ClassFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ConsoleWindow.h"
 				>
 			</File>
 			<File

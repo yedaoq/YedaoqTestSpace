@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
-#define _main_appbar _tmain
+#define _tmain_dynamic_cast _tmain
 
 
 // TODO: 在此处引用程序需要的其他头文件
