@@ -183,11 +183,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dynamic_cast.cpp"
+				RelativePath=".\isfullscreen.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\isfullscreen.cpp"
+				RelativePath=".\longstrsplit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NTFS_USN.cpp"
 				>
 			</File>
 			<File
@@ -212,10 +216,6 @@
 			</File>
 			<File
 				RelativePath=".\structsize.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume.cpp"
 				>
 			</File>
 		</Filter>
