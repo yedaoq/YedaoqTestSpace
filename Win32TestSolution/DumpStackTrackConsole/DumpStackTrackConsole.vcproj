@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="base"
-	ProjectGUID="{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}"
-	RootNamespace="base"
+	Name="DumpStackTrackConsole"
+	ProjectGUID="{B7A199EB-FD66-4D84-8551-5D6559215C66}"
+	RootNamespace="DumpStackTrackConsole"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -18,9 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(DevDir)Library\common.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -89,9 +88,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(DevDir)Library\common.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -171,27 +169,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\360aaa.cpp"
+				RelativePath=".\dumpstack.c"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\adjustVM.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\appbar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\isfullscreen.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\longstrsplit.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NTFS_USN.cpp"
+				RelativePath=".\DumpStackTrackConsole.cpp"
 				>
 			</File>
 			<File
@@ -213,38 +203,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\structsize.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\urlget.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_coreapi.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_mixer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_mxierinfo.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_waveout.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volumn_name.cpp"
-				>
 			</File>
 		</Filter>
 		<Filter

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="base"
-	ProjectGUID="{B8ED3F46-49FE-440C-92A1-0CC28C0E25E7}"
-	RootNamespace="base"
+	Name="DumpStackTrace"
+	ProjectGUID="{BFC4EBE1-FDC8-4290-81CB-297F4E5BD430}"
+	RootNamespace="DumpStackTrace"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -18,9 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(DevDir)Library\common.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -62,7 +61,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -89,9 +88,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(DevDir)Library\common.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -114,8 +112,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -134,7 +132,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -171,27 +169,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\360aaa.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\adjustVM.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\appbar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\isfullscreen.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\longstrsplit.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NTFS_USN.cpp"
+				RelativePath=".\DumpStackTrace.cpp"
 				>
 			</File>
 			<File
@@ -214,44 +192,20 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\structsize.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\urlget.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_coreapi.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_mixer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_mxierinfo.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volume_waveout.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\volumn_name.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\DumpStackTrace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Resource.h"
+				>
+			</File>
 			<File
 				RelativePath=".\stdafx.h"
 				>
@@ -266,6 +220,18 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\DumpStackTrace.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\DumpStackTrace.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\small.ico"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

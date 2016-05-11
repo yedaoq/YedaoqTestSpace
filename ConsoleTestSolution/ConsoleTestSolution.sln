@@ -9,6 +9,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "base", "base\base.vcproj", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "http-parser", "http-parser\http-parser.vcproj", "{942FF4B3-6686-47D5-B27B-7CE9EC49E616}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zj", "zj\zj.vcproj", "{694079E8-BE64-4DBE-8F6A-360F0A86776B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "volume", "volume\volume.vcproj", "{272A0145-BB5E-4DE1-A8A2-B97FDD4C59B6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcproj", "{FD343879-D4BD-4DC8-8D89-E60DEDA7AE5D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stltest", "stltest\stltest.vcproj", "{01FBA490-3BDB-4FCB-9955-81102E0548C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +39,22 @@ Global
 		{942FF4B3-6686-47D5-B27B-7CE9EC49E616}.Debug|Win32.Build.0 = Debug|Win32
 		{942FF4B3-6686-47D5-B27B-7CE9EC49E616}.Release|Win32.ActiveCfg = Release|Win32
 		{942FF4B3-6686-47D5-B27B-7CE9EC49E616}.Release|Win32.Build.0 = Release|Win32
+		{694079E8-BE64-4DBE-8F6A-360F0A86776B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{694079E8-BE64-4DBE-8F6A-360F0A86776B}.Debug|Win32.Build.0 = Debug|Win32
+		{694079E8-BE64-4DBE-8F6A-360F0A86776B}.Release|Win32.ActiveCfg = Release|Win32
+		{694079E8-BE64-4DBE-8F6A-360F0A86776B}.Release|Win32.Build.0 = Release|Win32
+		{272A0145-BB5E-4DE1-A8A2-B97FDD4C59B6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{272A0145-BB5E-4DE1-A8A2-B97FDD4C59B6}.Debug|Win32.Build.0 = Debug|Win32
+		{272A0145-BB5E-4DE1-A8A2-B97FDD4C59B6}.Release|Win32.ActiveCfg = Release|Win32
+		{272A0145-BB5E-4DE1-A8A2-B97FDD4C59B6}.Release|Win32.Build.0 = Release|Win32
+		{FD343879-D4BD-4DC8-8D89-E60DEDA7AE5D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FD343879-D4BD-4DC8-8D89-E60DEDA7AE5D}.Debug|Win32.Build.0 = Debug|Win32
+		{FD343879-D4BD-4DC8-8D89-E60DEDA7AE5D}.Release|Win32.ActiveCfg = Release|Win32
+		{FD343879-D4BD-4DC8-8D89-E60DEDA7AE5D}.Release|Win32.Build.0 = Release|Win32
+		{01FBA490-3BDB-4FCB-9955-81102E0548C8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{01FBA490-3BDB-4FCB-9955-81102E0548C8}.Debug|Win32.Build.0 = Debug|Win32
+		{01FBA490-3BDB-4FCB-9955-81102E0548C8}.Release|Win32.ActiveCfg = Release|Win32
+		{01FBA490-3BDB-4FCB-9955-81102E0548C8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
