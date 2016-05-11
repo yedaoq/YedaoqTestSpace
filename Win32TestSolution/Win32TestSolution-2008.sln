@@ -35,6 +35,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DumpStackTrace", "DumpStack
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DumpStackTrackConsole", "DumpStackTrackConsole\DumpStackTrackConsole.vcproj", "{B7A199EB-FD66-4D84-8551-5D6559215C66}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageFastShower", "ImageFastShower\ImageFastShower.vcproj", "{5B947976-6562-4DF9-904B-431EBA3068C9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NtfsUsn", "NtfsUsn\NtfsUsn.vcproj", "{0148C987-A22D-48E0-B9F8-C734651D3763}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -147,6 +151,18 @@ Global
 		{B7A199EB-FD66-4D84-8551-5D6559215C66}.Release|Win32.ActiveCfg = Release|Win32
 		{B7A199EB-FD66-4D84-8551-5D6559215C66}.Release|Win32.Build.0 = Release|Win32
 		{B7A199EB-FD66-4D84-8551-5D6559215C66}.Release|x64.ActiveCfg = Release|Win32
+		{5B947976-6562-4DF9-904B-431EBA3068C9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B947976-6562-4DF9-904B-431EBA3068C9}.Debug|Win32.Build.0 = Debug|Win32
+		{5B947976-6562-4DF9-904B-431EBA3068C9}.Debug|x64.ActiveCfg = Debug|Win32
+		{5B947976-6562-4DF9-904B-431EBA3068C9}.Release|Win32.ActiveCfg = Release|Win32
+		{5B947976-6562-4DF9-904B-431EBA3068C9}.Release|Win32.Build.0 = Release|Win32
+		{5B947976-6562-4DF9-904B-431EBA3068C9}.Release|x64.ActiveCfg = Release|Win32
+		{0148C987-A22D-48E0-B9F8-C734651D3763}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0148C987-A22D-48E0-B9F8-C734651D3763}.Debug|Win32.Build.0 = Debug|Win32
+		{0148C987-A22D-48E0-B9F8-C734651D3763}.Debug|x64.ActiveCfg = Debug|Win32
+		{0148C987-A22D-48E0-B9F8-C734651D3763}.Release|Win32.ActiveCfg = Release|Win32
+		{0148C987-A22D-48E0-B9F8-C734651D3763}.Release|Win32.Build.0 = Release|Win32
+		{0148C987-A22D-48E0-B9F8-C734651D3763}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
