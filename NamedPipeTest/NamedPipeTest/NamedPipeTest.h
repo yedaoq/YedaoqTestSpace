@@ -1,0 +1,1 @@
+// NamedPipeTest.h
