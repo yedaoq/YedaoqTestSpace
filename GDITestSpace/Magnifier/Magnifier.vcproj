@@ -166,7 +166,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\main.cpp"
+			RelativePath=".\test.cpp"
 			>
 		</File>
 	</Files>

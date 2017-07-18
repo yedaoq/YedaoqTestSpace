@@ -17,6 +17,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcproj", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stltest", "stltest\stltest.vcproj", "{01FBA490-3BDB-4FCB-9955-81102E0548C8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DwmThumbnail", "DwmThumbnail\DwmThumbnail.vcproj", "{A592CA58-5306-4D83-B587-4E500EB4DF90}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DumpWindow", "DumpWindow\DumpWindow.vcproj", "{B03A8BED-6587-4750-93A6-40683C787C54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -55,6 +59,14 @@ Global
 		{01FBA490-3BDB-4FCB-9955-81102E0548C8}.Debug|Win32.Build.0 = Debug|Win32
 		{01FBA490-3BDB-4FCB-9955-81102E0548C8}.Release|Win32.ActiveCfg = Release|Win32
 		{01FBA490-3BDB-4FCB-9955-81102E0548C8}.Release|Win32.Build.0 = Release|Win32
+		{A592CA58-5306-4D83-B587-4E500EB4DF90}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A592CA58-5306-4D83-B587-4E500EB4DF90}.Debug|Win32.Build.0 = Debug|Win32
+		{A592CA58-5306-4D83-B587-4E500EB4DF90}.Release|Win32.ActiveCfg = Release|Win32
+		{A592CA58-5306-4D83-B587-4E500EB4DF90}.Release|Win32.Build.0 = Release|Win32
+		{B03A8BED-6587-4750-93A6-40683C787C54}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B03A8BED-6587-4750-93A6-40683C787C54}.Debug|Win32.Build.0 = Debug|Win32
+		{B03A8BED-6587-4750-93A6-40683C787C54}.Release|Win32.ActiveCfg = Release|Win32
+		{B03A8BED-6587-4750-93A6-40683C787C54}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

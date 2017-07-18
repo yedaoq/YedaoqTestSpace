@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
-#define _tmain_ntfsusn _tmain
+#define _tmain_monitors _tmain
 
 
 // TODO: 在此处引用程序需要的其他头文件

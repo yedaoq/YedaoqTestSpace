@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testdll", "IconSize\test\te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Magnifier", "Magnifier\Magnifier.vcproj", "{3E314AB7-1066-4AB5-804A-FE48538B5014}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wtest", "wtest\wtest.vcproj", "{52C2EA2E-20EC-4EE1-9721-D8225ACCB12A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScreenCapturer", "ScreenCapturer\ScreenCapturer.vcproj", "{DC192DC8-F042-443A-93D7-5F664DFCC10A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +35,14 @@ Global
 		{3E314AB7-1066-4AB5-804A-FE48538B5014}.Debug|Win32.Build.0 = Debug|Win32
 		{3E314AB7-1066-4AB5-804A-FE48538B5014}.Release|Win32.ActiveCfg = Release|Win32
 		{3E314AB7-1066-4AB5-804A-FE48538B5014}.Release|Win32.Build.0 = Release|Win32
+		{52C2EA2E-20EC-4EE1-9721-D8225ACCB12A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{52C2EA2E-20EC-4EE1-9721-D8225ACCB12A}.Debug|Win32.Build.0 = Debug|Win32
+		{52C2EA2E-20EC-4EE1-9721-D8225ACCB12A}.Release|Win32.ActiveCfg = Release|Win32
+		{52C2EA2E-20EC-4EE1-9721-D8225ACCB12A}.Release|Win32.Build.0 = Release|Win32
+		{DC192DC8-F042-443A-93D7-5F664DFCC10A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DC192DC8-F042-443A-93D7-5F664DFCC10A}.Debug|Win32.Build.0 = Debug|Win32
+		{DC192DC8-F042-443A-93D7-5F664DFCC10A}.Release|Win32.ActiveCfg = Release|Win32
+		{DC192DC8-F042-443A-93D7-5F664DFCC10A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

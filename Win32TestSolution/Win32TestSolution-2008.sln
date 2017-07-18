@@ -39,6 +39,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageFastShower", "ImageFas
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NtfsUsn", "NtfsUsn\NtfsUsn.vcproj", "{0148C987-A22D-48E0-B9F8-C734651D3763}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "layered", "layered\layered.vcproj", "{FDA2920D-0155-428C-B69D-575433257497}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -163,6 +165,12 @@ Global
 		{0148C987-A22D-48E0-B9F8-C734651D3763}.Release|Win32.ActiveCfg = Release|Win32
 		{0148C987-A22D-48E0-B9F8-C734651D3763}.Release|Win32.Build.0 = Release|Win32
 		{0148C987-A22D-48E0-B9F8-C734651D3763}.Release|x64.ActiveCfg = Release|Win32
+		{FDA2920D-0155-428C-B69D-575433257497}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FDA2920D-0155-428C-B69D-575433257497}.Debug|Win32.Build.0 = Debug|Win32
+		{FDA2920D-0155-428C-B69D-575433257497}.Debug|x64.ActiveCfg = Debug|Win32
+		{FDA2920D-0155-428C-B69D-575433257497}.Release|Win32.ActiveCfg = Release|Win32
+		{FDA2920D-0155-428C-B69D-575433257497}.Release|Win32.Build.0 = Release|Win32
+		{FDA2920D-0155-428C-B69D-575433257497}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
